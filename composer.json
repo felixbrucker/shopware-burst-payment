@@ -1,0 +1,37 @@
+{
+    "name": "burst/burst-payment",
+    "type": "shopware-platform-plugin",
+    "description": "Burst payment processing for Shopware 6",
+    "version": "1.0.0",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Felix Brucker",
+            "email": "contact@felixbrucker.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "brick/math": "^0.8.8",
+        "chillerlan/php-qrcode": "^3.2.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Burst\\BurstPayment\\": "./src"
+        },
+        "files": [
+            "./autoload-dist/PluginIsManagedByComposer.php"
+        ]
+    },
+    "extra": {
+        "shopware-plugin-class": "Burst\\BurstPayment\\BurstPayment",
+        "copyright": "(c) by Felix Brucker",
+        "label": {
+            "de-DE": "Burst-Zahlungen für Shopware 6",
+            "en-GB": "Burst payments for Shopware 6"
+        }
+    }
+}

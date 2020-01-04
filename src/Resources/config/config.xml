@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
+
+    <card>
+        <title>Basic configuration</title>
+        <title lang="de-DE">Grundeinstellungen</title>
+        <input-field>
+            <name>burstAddress</name>
+            <placeholder>BURST-XXXX-XXXX-XXXX-XXXXX</placeholder>
+            <copyable>true</copyable>
+            <label>Burst address</label>
+            <label lang="de-DE">Burst Adresse</label>
+            <helpText>Enter your Burst address here. This address will be used to receive payments with. If you do not have one yet, you can create one in your Burst wallet. Please make sure the passphrase is saved to a secure location so it does not get lost, as without it you won't have access to your funds.</helpText>
+            <helpText lang="de-DE">Tragen Sie hier Ihre Burst Addresse ein. Diese Adresse wird genutzt um Zahlungen zu empfangen. Falls Sie noch keine Adresse besitzen, können Sie in ihrem Wallet eine erstellen. Bitte stellen Sie sicher, dass das Passwort der Burst Adresse an einem sicheren Ort gespeichert ist und nicht verloren gehen kann, da sie ohne dieses keinen Zugriff auf ihr Geld haben.</helpText>
+        </input-field>
+        <input-field>
+            <name>burstWalletUrl</name>
+            <placeholder>http://127.0.0.1:8125</placeholder>
+            <defaultValue>https://wallet.burst-alliance.org:8125</defaultValue>
+            <label>Burst wallet</label>
+            <label lang="de-DE">Burst Wallet</label>
+            <helpText>Enter your Burst wallet url here. It is greatly recommended to run your own wallet for increased security and reliability.</helpText>
+            <helpText lang="de-DE">Tragen Sie hier Ihre Burst Wallet URL ein. Es wird dringend empfohlen, Ihr eigenes Wallet zu betreiben, um die Sicherheit und Zuverlässigkeit zu erhöhen.</helpText>
+        </input-field>
+        <input-field type="int">
+            <name>requiredConfirmationCount</name>
+            <defaultValue>6</defaultValue>
+            <label>Transaction confirmation count</label>
+            <label lang="de-DE">Anzahl der Transaktionsbestätigungen</label>
+            <helpText>The transaction confirmation count defines how many confirmations a transaction requires before being accepted as payed.</helpText>
+            <helpText lang="de-DE">Die Anzahl der Transaktionsbestätigungen definiert, wie viele Bestätigungen eine Transaktion benötigt, bevor sie als bezahlt akzeptiert wird.</helpText>
+        </input-field>
+        <input-field type="int">
+            <name>cancelUnmatchedOrdersAfterMinutes</name>
+            <defaultValue>300</defaultValue>
+            <label>Cancel unmatched orders after n minutes</label>
+            <label lang="de-DE">Nicht abgeglichene Bestellungen nach n Minuten stornieren</label>
+            <helpText>Orders for which no transaction is detected within the specified time in minutes are automatically cancelled.</helpText>
+            <helpText lang="de-DE">Bestellungen, für die innerhalb der angegebenen Zeit in Minuten keine Transaktion erkannt wird, werden automatisch storniert.</helpText>
+        </input-field>
+    </card>
+</config>

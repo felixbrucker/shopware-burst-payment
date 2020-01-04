@@ -1,0 +1,18 @@
+{% sw_extends '@Storefront/storefront/page/checkout/summary.html.twig' %}
+
+{% block page_checkout_summary_taxes %}
+    {{ parent() }}
+    {% if context.paymentMethod.formattedHandlerIdentifier is same as('handler_burst_burstpaymenthandler')
+        and page.extensions.burstData
+        and page.extensions.burstData.data
+    %}
+        {% set burstData = page.extensions.burstData.data %}
+        <dt class="col-7 checkout-aside-summary-label">
+            {{ "burst_payment.checkout.estimated_amount_in_burst"|trans|sw_sanitize }}
+        </dt>
+
+        <dd class="col-5 checkout-aside-summary-value">
+            {{ burstData.estimatedAmountToPayInBurst }} BURST
+        </dd>
+    {% endif %}
+{% endblock %}

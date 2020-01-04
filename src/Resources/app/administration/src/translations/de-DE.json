@@ -1,0 +1,17 @@
+{
+    "burst_payment": {
+        "payment_info_title": "Burst Zahlungsinformationen",
+        "amount_to_pay": "Zu zahlender Betrag",
+        "address_of_buyer": "Adresse des Käufers",
+        "rate_used": "Verwendeter Kurs",
+        "transaction_id": "Transaktions ID",
+        "transaction_state": "Transaktionsstatus",
+        "transaction_states": {
+            "unmatched": "Noch keine passende Transaktion erkannt",
+            "unconfirmed": "Transaktion ist noch unbestätigt",
+            "pending": "Transaktion wird bestätigt ({confirmations} Bestätigungen)",
+            "confirmed": "Transaktion wurde akzeptiert",
+            "cancelled": "Es wurde keine passende Transaktion erkannt"
+        }
+    }
+}

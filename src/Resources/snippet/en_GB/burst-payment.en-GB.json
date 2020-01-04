@@ -1,0 +1,11 @@
+{
+    "burst_payment": {
+        "checkout": {
+            "complete_payment": "Please complete the payment",
+            "send_amount": "Please send exactly <strong>%burstAmount% BURST</strong> to <strong>%burstAddress%</strong> to complete the payment.",
+            "order_cancelled_after": "<strong>Note:</strong> The order is automatically cancelled if no payment is made within the next %minutes% minutes.",
+            "rate_used": "Conversion rate used",
+            "estimated_amount_in_burst": "Est. amount in BURST"
+        }
+    }
+}

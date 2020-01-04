@@ -1,0 +1,35 @@
+{% block sw_order_user_card_row_secondary %}
+    {% parent %}
+    <template v-if="hasBurstPaymentContext">
+        <sw-card-section secondary divider="top">
+            <h5>{{ $t('burst_payment.payment_info_title') }}</h5>
+            <sw-container columns="repeat(auto-fit, minmax(250px, 1fr)" gap="30px 30px">
+                <sw-description-list columns="1fr" grid="1fr" class="sw-order-user-card__summary-vertical">
+                    <dt>{{ $t('burst_payment.amount_to_pay') }}</dt>
+                    <dd>{{ burstPaymentContext.amountToPayInBurst }} BURST</dd>
+
+                    <template v-if="burstPaymentContext.senderAddress">
+                        <dt>{{ $t('burst_payment.address_of_buyer') }}</dt>
+                        <dd>{{ burstPaymentContext.senderAddress }}</dd>
+                    </template>
+
+                    <dt>{{ $t('burst_payment.transaction_state') }}:</dt>
+                    <dd>{{ transactionStateString }}</dd>
+                </sw-description-list>
+                <sw-description-list columns="1fr" grid="1fr" class="sw-order-user-card__summary-vertical">
+                    <dt style="padding-top: 4px">{{ $t('burst_payment.rate_used') }}</dt>
+                    <dd>1 BURST = {{ burstPaymentContext.burstRateUsed }} {{ currentOrder.currency.symbol }}</dd>
+
+                    <template v-if="burstPaymentContext.transactionId">
+                        <dt>{{ $t('burst_payment.transaction_id') }}</dt>
+                        <dd>
+                            <a v-bind:href="'https://explorer.burstcoin.network/?action=transaction&id=' + burstPaymentContext.transactionId" target="_blank">
+                                {{ burstPaymentContext.transactionId }}
+                            </a>
+                        </dd>
+                    </template>
+                </sw-description-list>
+            </sw-container>
+        </sw-card-section>
+    </template>
+{% endblock %}
