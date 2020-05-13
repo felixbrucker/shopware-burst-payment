@@ -12,19 +12,28 @@
     ],
     "require": {
         "php": "^7.2",
-        "brick/math": "^0.8.8",
-        "chillerlan/php-qrcode": "^3.2.0"
+        "brick/math": "^0.8.15",
+        "chillerlan/php-qrcode": "^3.2.3",
+        "shopware/core": "^6.2.0",
+        "shopware/storefront": "^6.2.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master"
+        "roave/security-advisories": "dev-master",
+        "phpunit/phpunit": "9.1.4"
+    },
+    "suggest": {
+        "shopware/administration": "Enables Burst Payment to be operated via the Shopware 6 administration frontend.",
+        "shopware/storefront": "Enables the Burst Payment method in the Shopware 6 Storefront."
     },
     "autoload": {
         "psr-4": {
-            "Burst\\BurstPayment\\": "./src"
-        },
-        "files": [
-            "./autoload-dist/PluginIsManagedByComposer.php"
-        ]
+            "Burst\\BurstPayment\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Burst\\BurstPayment\\Test\\": "test/"
+        }
     },
     "extra": {
         "shopware-plugin-class": "Burst\\BurstPayment\\BurstPayment",
@@ -33,5 +42,8 @@
             "de-DE": "Burst-Zahlungen für Shopware 6",
             "en-GB": "Burst payments for Shopware 6"
         }
+    },
+    "scripts": {
+        "test:unit": "./vendor/bin/phpunit --config phpunit.unit.xml --testdox"
     }
 }

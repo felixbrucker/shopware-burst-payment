@@ -10,7 +10,10 @@ use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\Framework\Plugin\Util\PluginIdProvider;
 
-require_once __DIR__ . '/../autoload-dist/autoload.php';
+if (file_exists(__DIR__ . '/../autoload-dist/vendor/autoload.php')) {
+    // The file does not exist if the plugin was installed via composer require of the Shopware project
+    require_once(__DIR__ . '/../autoload-dist/vendor/autoload.php');
+}
 
 class BurstPayment extends Plugin
 {

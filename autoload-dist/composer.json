@@ -1,0 +1,10 @@
+{
+    "name": "burst/burst-payment-autoload-dist",
+    "type": "project",
+    "description": "",
+    "require": {
+        "brick/math": "^0.8.15",
+        "chillerlan/php-qrcode": "^3.2.3"
+    },
+    "minimum-stability": "stable"
+}
