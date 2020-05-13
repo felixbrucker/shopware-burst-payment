@@ -4,8 +4,10 @@ namespace Burst\BurstPayment\ScheduledTasks;
 
 use Burst\BurstPayment\Services\OpenOrdersService;
 use Psr\Log\LoggerInterface;
+use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\MessageQueue\ScheduledTask\ScheduledTaskHandler;
+use Throwable;
 
 class MatchUnmatchedOrdersTaskHandler extends ScheduledTaskHandler
 {
@@ -38,8 +40,8 @@ class MatchUnmatchedOrdersTaskHandler extends ScheduledTaskHandler
     public function run(): void
     {
         try {
-            $this->openOrdersService->matchUnmatchedOrders();
-        } catch (\Throwable $e) {
+            $this->openOrdersService->matchUnmatchedOrders(Context::createDefaultContext());
+        } catch (Throwable $e) {
             $this->logger->error('Match Unmatched Orders | Error: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);

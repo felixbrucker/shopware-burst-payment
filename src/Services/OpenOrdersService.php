@@ -63,9 +63,9 @@ class OpenOrdersService
         $this->orderTransactionStateHandler = $orderTransactionStateHandler;
     }
 
-    public function matchUnmatchedOrders(): void
+    public function matchUnmatchedOrders(Context $context): void
     {
-        $unmatchedOrderTransactions = $this->getUnmatchedOrderTransactions();
+        $unmatchedOrderTransactions = $this->getUnmatchedOrderTransactions($context);
         if (count($unmatchedOrderTransactions) === 0) {
             return;
         }
@@ -78,7 +78,6 @@ class OpenOrdersService
         $unconfirmedTransactions = $burstApi->getUnconfirmedTransactions();
         $transactions = $burstApi->getTransactionsFrom($oldestOrderOrderDateTime);
 
-        $context = Context::createDefaultContext();
         $requiredConfirmationCount = $this->settingsService->getConfigValue('requiredConfirmationCount') ?: 6;
         $cancelUnmatchedOrdersAfterMinutes = $this->settingsService->getConfigValue('cancelUnmatchedOrdersAfterMinutes');
         /** @var OrderTransactionEntity $orderTransaction */
@@ -144,15 +143,14 @@ class OpenOrdersService
         }
     }
 
-    public function updateMatchedOrders(): void
+    public function updateMatchedOrders(Context $context): void
     {
-        $matchedOrderTransactions = $this->getMatchedOrderTransactions();
+        $matchedOrderTransactions = $this->getMatchedOrderTransactions($context);
         if (count($matchedOrderTransactions) === 0) {
             return;
         }
 
         $burstApi = $this->burstApiFactory->getBurstApiForSalesChannel();
-        $context = Context::createDefaultContext();
         $requiredConfirmationCount = $this->settingsService->getConfigValue('requiredConfirmationCount') ?: 6;
         foreach ($matchedOrderTransactions as $orderTransaction) {
             $paymentContext = $this->paymentContext->getBurstPaymentContext($orderTransaction);
@@ -225,9 +223,9 @@ class OpenOrdersService
         return $found;
     }
 
-    private function getUnmatchedOrderTransactions(): array
+    private function getUnmatchedOrderTransactions(Context $context): array
     {
-        $openBurstOrderTransactions = $this->getOpenBurstOrderTransactions();
+        $openBurstOrderTransactions = $this->getOpenBurstOrderTransactions($context);
 
         return array_values(array_filter($openBurstOrderTransactions, function (OrderTransactionEntity $orderTransaction) {
             $paymentContext = $this->paymentContext->getBurstPaymentContext($orderTransaction);
@@ -236,9 +234,9 @@ class OpenOrdersService
         }));
     }
 
-    private function getMatchedOrderTransactions(): array
+    private function getMatchedOrderTransactions(Context $context): array
     {
-        $openBurstOrderTransactions = $this->getOpenBurstOrderTransactions();
+        $openBurstOrderTransactions = $this->getOpenBurstOrderTransactions($context);
 
         return array_values(array_filter($openBurstOrderTransactions, function (OrderTransactionEntity $orderTransaction) {
             $paymentContext = $this->paymentContext->getBurstPaymentContext($orderTransaction);
@@ -247,7 +245,7 @@ class OpenOrdersService
         }));
     }
 
-    private function getOpenBurstOrderTransactions(): array
+    private function getOpenBurstOrderTransactions(Context $context): array
     {
         return $this->orderTransactionRepository->search(
             (new Criteria())->addFilter(
@@ -258,7 +256,7 @@ class OpenOrdersService
             ])->addSorting(
                 new FieldSorting('order_transaction.order.orderDateTime', FieldSorting::ASCENDING)
             ),
-            Context::createDefaultContext()
+            $context
         )->getElements();
     }
 }

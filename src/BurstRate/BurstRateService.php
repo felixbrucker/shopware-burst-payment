@@ -29,15 +29,15 @@ class BurstRateService
         $this->coinGeckoApiService = $coinGeckoApiService;
     }
 
-    public function getBurstRate(string $currency): ?BurstRateEntity
+    public function getBurstRate(string $currency, Context $context): ?BurstRateEntity
     {
         return $this->burstRateRepository->search(
             (new Criteria())->addFilter(new EqualsFilter('currency', $currency)),
-            Context::createDefaultContext()
+            $context
         )->first();
     }
 
-    public function updateRates(): void
+    public function updateRates(Context $context): void
     {
         $supportedCurrencies = $this->coinGeckoApiService->getSupportedCurrencies();
 
@@ -49,7 +49,7 @@ class BurstRateService
         /** @var BurstRateEntity[] $burstRates */
         $burstRates = $this->burstRateRepository->search(
             new Criteria(),
-            Context::createDefaultContext()
+            $context
         )->getElements();
 
         $entitiesToUpsert = [];
@@ -74,7 +74,7 @@ class BurstRateService
         if (count($entitiesToUpsert) > 0) {
             $this->burstRateRepository->upsert(
                 $entitiesToUpsert,
-                Context::createDefaultContext()
+                $context
             );
         }
 
@@ -91,7 +91,7 @@ class BurstRateService
                         'id' => $burstRate->getId()
                     ];
                 }, $removedCurrencies),
-                Context::createDefaultContext()
+                $context
             );
         }
     }

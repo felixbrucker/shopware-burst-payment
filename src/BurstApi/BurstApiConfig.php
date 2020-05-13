@@ -4,21 +4,28 @@ namespace Burst\BurstPayment\BurstApi;
 
 class BurstApiConfig
 {
-    /** @var string */
-    public $burstAddress;
+    /**
+     * @var array
+     */
+    private $config;
 
-    /** @var string */
-    public $walletUrl;
+    public function __construct(array $config) {
+        $this->config = $config;
+    }
 
-    private function __construct() {}
-
-    public static function fromShopwareConfig(array $config): BurstApiConfig
+    /**
+     * @return string|null
+     */
+    public function getBurstAddress(): ?string
     {
-        $self = new self();
+        return $this->config['burstAddress'] ?? null;
+    }
 
-        $self->burstAddress = $config['burstAddress'];
-        $self->walletUrl = $config['burstWalletUrl'];
-
-        return $self;
+    /**
+     * @return string|null
+     */
+    public function getBurstWalletUrl(): ?string
+    {
+        return $this->config['burstWalletUrl'] ?? null;
     }
 }

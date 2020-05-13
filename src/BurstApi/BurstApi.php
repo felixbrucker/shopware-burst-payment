@@ -34,7 +34,7 @@ class BurstApi
         $this->config = $burstApiConfig;
 
         $this->client = new Client([
-            'base_uri' => rtrim($this->config->walletUrl, '/') . '/burst',
+            'base_uri' => rtrim($this->config->getBurstWalletUrl(), '/') . '/burst',
             'timeout'  => 60, // In seconds
         ]);
     }
@@ -47,11 +47,11 @@ class BurstApi
     public function getUnconfirmedTransactions(): array
     {
         $result = $this->doApiCall('GET', 'getUnconfirmedTransactions', [
-            'account' => $this->config->burstAddress,
+            'account' => $this->config->getBurstAddress(),
         ]);
 
         return array_values(array_filter($result['unconfirmedTransactions'], function ($transaction) {
-            return $transaction['recipientRS'] === $this->config->burstAddress;
+            return $transaction['recipientRS'] === $this->config->getBurstAddress();
         }));
     }
 
@@ -96,7 +96,7 @@ class BurstApi
     public function getTransactions(int $offset = 0, int $limit = 100, int $timestamp = null): array
     {
         $queryParams = [
-            'account' => $this->config->burstAddress,
+            'account' => $this->config->getBurstAddress(),
             'firstIndex' => $offset,
             'lastIndex' => $offset + $limit - 1, // Last index is included
         ];
@@ -106,7 +106,7 @@ class BurstApi
         $result = $this->doApiCall('GET', 'getAccountTransactions', $queryParams);
 
         return array_values(array_filter($result['transactions'], function ($transaction) {
-            return $transaction['recipientRS'] === $this->config->burstAddress;
+            return $transaction['recipientRS'] === $this->config->getBurstAddress();
         }));
     }
 
@@ -124,11 +124,11 @@ class BurstApi
     }
 
     /**
-     * @return mixed
+     * @return int
      * @throws BurstApiException
      * @throws GuzzleException
      */
-    private function getTime()
+    private function getTime(): int
     {
         $result = $this->doApiCall('GET', 'getTime');
 

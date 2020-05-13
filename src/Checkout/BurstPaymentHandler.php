@@ -50,7 +50,11 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
 
             $totalPrice = $orderTransaction->getAmount()->getTotalPrice();
             $currencyIsoCode = $salesChannelContext->getCurrency()->getIsoCode();
-            $burstRate = $this->burstRateService->getBurstRate(strtolower($currencyIsoCode));
+            $context = $salesChannelContext->getContext();
+            $burstRate = $this->burstRateService->getBurstRate(
+                strtolower($currencyIsoCode),
+                $context
+            );
             if (!$burstRate) {
                 throw new RuntimeException('Currency ' . $currencyIsoCode . ' can not be converted to BURST');
             }
@@ -62,7 +66,6 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
             $burstPaymentContext['amountToPayInBurst'] = BurstAmount::fromNqtAmount($totalPriceInBurstNQTToPay)->toBurstAmount();
             $burstPaymentContext['burstRateUsed'] = $burstRate->getRate();
             $burstPaymentContext['transactionState'] = 'unmatched';
-            $context = $salesChannelContext->getContext();
             $this->paymentContext->setBurstPaymentContext($orderTransaction, $context, $burstPaymentContext);
         } catch (Throwable $exception) {
             throw new SyncPaymentProcessException($orderTransaction->getId(), $exception->getMessage());

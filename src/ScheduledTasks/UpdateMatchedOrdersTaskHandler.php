@@ -4,8 +4,10 @@ namespace Burst\BurstPayment\ScheduledTasks;
 
 use Burst\BurstPayment\Services\OpenOrdersService;
 use Psr\Log\LoggerInterface;
+use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\MessageQueue\ScheduledTask\ScheduledTaskHandler;
+use Throwable;
 
 class UpdateMatchedOrdersTaskHandler extends ScheduledTaskHandler
 {
@@ -38,8 +40,8 @@ class UpdateMatchedOrdersTaskHandler extends ScheduledTaskHandler
     public function run(): void
     {
         try {
-            $this->openOrdersService->updateMatchedOrders();
-        } catch (\Throwable $e) {
+            $this->openOrdersService->updateMatchedOrders(Context::createDefaultContext());
+        } catch (Throwable $e) {
             $this->logger->error('Update Matched Orders | Error: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);

@@ -36,7 +36,7 @@ class BurstApiFactory
         }
 
         $burstConfig = $this->settingsService->getConfig($salesChannelId);
-        $burstApiConfig = BurstApiConfig::fromShopwareConfig($burstConfig);
+        $burstApiConfig = new BurstApiConfig($burstConfig);
 
         $this->burstApiPerSalesChannelId[$salesChannelId] = new BurstApi($burstApiConfig, $this->logger);
 

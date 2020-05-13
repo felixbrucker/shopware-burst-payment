@@ -4,8 +4,10 @@ namespace Burst\BurstPayment\ScheduledTasks;
 
 use Burst\BurstPayment\BurstRate\BurstRateService;
 use Psr\Log\LoggerInterface;
+use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\MessageQueue\ScheduledTask\ScheduledTaskHandler;
+use Throwable;
 
 class UpdateRatesTaskHandler extends ScheduledTaskHandler
 {
@@ -38,8 +40,8 @@ class UpdateRatesTaskHandler extends ScheduledTaskHandler
     public function run(): void
     {
         try {
-            $this->burstRateService->updateRates();
-        } catch (\Throwable $e) {
+            $this->burstRateService->updateRates(Context::createDefaultContext());
+        } catch (Throwable $e) {
             $this->logger->error('Update Rates | Error: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);
