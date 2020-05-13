@@ -9,7 +9,8 @@ class BurstApiConfig
      */
     private $config;
 
-    public function __construct(array $config) {
+    public function __construct(array $config)
+    {
         $this->config = $config;
     }
 
@@ -18,7 +19,7 @@ class BurstApiConfig
      */
     public function getBurstAddress(): ?string
     {
-        return $this->config['burstAddress'] ?? null;
+        return $this->getConfigValueOrNull('burstAddress');
     }
 
     /**
@@ -26,6 +27,11 @@ class BurstApiConfig
      */
     public function getBurstWalletUrl(): ?string
     {
-        return $this->config['burstWalletUrl'] ?? null;
+        return $this->getConfigValueOrNull('burstWalletUrl');
+    }
+
+    private function getConfigValueOrNull(string $configKey)
+    {
+        return $this->config[$configKey] ?? null;
     }
 }

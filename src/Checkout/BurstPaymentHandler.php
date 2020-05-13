@@ -5,7 +5,7 @@ namespace Burst\BurstPayment\Checkout;
 use Brick\Math\BigDecimal;
 use Burst\BurstPayment\BurstApi\BurstAmount;
 use Burst\BurstPayment\BurstRate\BurstRateService;
-use Burst\BurstPayment\Services\PaymentContext;
+use Burst\BurstPayment\Services\OrderTransactionService;
 use RuntimeException;
 use Shopware\Core\Checkout\Cart\Exception\CustomerNotLoggedInException;
 use Shopware\Core\Checkout\Payment\Cart\PaymentHandler\SynchronousPaymentHandlerInterface;
@@ -18,7 +18,7 @@ use Throwable;
 class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
 {
     /**
-     * @var PaymentContext
+     * @var OrderTransactionService
      */
     private $paymentContext;
 
@@ -28,7 +28,7 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
     private $burstRateService;
 
     public function __construct(
-        PaymentContext $paymentContext,
+        OrderTransactionService $paymentContext,
         BurstRateService $burstRateService
     ) {
         $this->paymentContext = $paymentContext;
@@ -40,17 +40,17 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
         RequestDataBag $dataBag,
         SalesChannelContext $salesChannelContext
     ): void {
+        $customer = $salesChannelContext->getCustomer();
+        if (!$customer) {
+            throw new CustomerNotLoggedInException();
+        }
+
         $orderTransaction = $transaction->getOrderTransaction();
+        $totalPrice = $orderTransaction->getAmount()->getTotalPrice();
+        $currencyIsoCode = $salesChannelContext->getCurrency()->getIsoCode();
+        $context = $salesChannelContext->getContext();
 
         try {
-            $customer = $salesChannelContext->getCustomer();
-            if (!$customer) {
-                throw new CustomerNotLoggedInException();
-            }
-
-            $totalPrice = $orderTransaction->getAmount()->getTotalPrice();
-            $currencyIsoCode = $salesChannelContext->getCurrency()->getIsoCode();
-            $context = $salesChannelContext->getContext();
             $burstRate = $this->burstRateService->getBurstRate(
                 strtolower($currencyIsoCode),
                 $context

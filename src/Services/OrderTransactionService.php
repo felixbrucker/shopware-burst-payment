@@ -6,7 +6,7 @@ use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionEnti
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 
-class PaymentContext
+class OrderTransactionService
 {
     private const PAYMENT_CONTEXT_KEY = 'burst_payment_context';
 

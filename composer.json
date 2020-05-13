@@ -44,6 +44,6 @@
         }
     },
     "scripts": {
-        "test:unit": "./vendor/bin/phpunit --config phpunit.unit.xml --testdox"
+        "test:unit": "./vendor/bin/phpunit --config phpunit.xml --testdox"
     }
 }

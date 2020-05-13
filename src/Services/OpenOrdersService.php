@@ -28,7 +28,7 @@ class OpenOrdersService
     private $orderTransactionRepository;
 
     /**
-     * @var PaymentContext
+     * @var OrderTransactionService
      */
     private $paymentContext;
 
@@ -50,7 +50,7 @@ class OpenOrdersService
     public function __construct(
         LoggerInterface $logger,
         EntityRepositoryInterface $orderTransactionRepository,
-        PaymentContext $paymentContext,
+        OrderTransactionService $paymentContext,
         BurstApiFactory $burstApiFactory,
         SettingsService $settingsService,
         OrderTransactionStateHandler $orderTransactionStateHandler
