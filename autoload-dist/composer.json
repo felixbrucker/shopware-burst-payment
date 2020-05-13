@@ -4,7 +4,7 @@
     "description": "",
     "require": {
         "brick/math": "^0.8.15",
-        "chillerlan/php-qrcode": "^4.0.1"
+        "chillerlan/php-qrcode": "^3.2.3"
     },
     "minimum-stability": "stable"
 }
