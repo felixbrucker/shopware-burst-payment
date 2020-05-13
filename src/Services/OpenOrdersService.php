@@ -99,7 +99,7 @@ class OpenOrdersService
                 $diffInSeconds = (new DateTime('NOW'))->getTimestamp() - $orderDateTime->getTimestamp();
                 if ($cancelUnmatchedOrdersAfterMinutes && $diffInSeconds > $cancelUnmatchedOrdersAfterMinutes * 60) {
                     $this->logger->info(
-                        '[Burst Payment] Canceling order because unmatched for greater than ' . $cancelUnmatchedOrdersAfterMinutes . ' minutes',
+                        'Canceling order because unmatched for greater than ' . $cancelUnmatchedOrdersAfterMinutes . ' minutes',
                         [
                             'orderNumber' => $orderTransaction->getOrder()->getOrderNumber(),
                         ]
@@ -115,7 +115,7 @@ class OpenOrdersService
                 continue;
             }
             $this->logger->debug(
-                '[Burst Payment] Matched order successfully',
+                'Matched order successfully',
                 [
                     'orderNumber' => $orderTransaction->getOrder()->getOrderNumber(),
                     'burstTransactionId' => $matchingTransaction['transaction'],
@@ -134,7 +134,7 @@ class OpenOrdersService
             }
             $this->orderTransactionStateHandler->pay($orderTransaction->getId(), $context);
             $this->logger->debug(
-                '[Burst Payment] Marked order as paid after transaction matured',
+                'Marked order as paid after transaction matured',
                 [
                     'orderNumber' => $orderTransaction->getOrder()->getOrderNumber(),
                     'burstTransactionId' => $matchingTransaction['transaction'],
@@ -191,7 +191,7 @@ class OpenOrdersService
             }
             $this->orderTransactionStateHandler->pay($orderTransaction->getId(), $context);
             $this->logger->debug(
-                '[Burst Payment] Marked order as paid after transaction matured',
+                'Marked order as paid after transaction matured',
                 [
                     'orderNumber' => $orderTransaction->getOrder()->getOrderNumber(),
                     'burstTransactionId' => $paymentContext['transactionId'],

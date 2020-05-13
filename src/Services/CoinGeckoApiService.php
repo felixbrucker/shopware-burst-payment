@@ -83,7 +83,7 @@ class CoinGeckoApiService
         } catch (RequestException $e) {
             $request = $e->getRequest();
             $response = $e->getResponse();
-            $this->logger->error('[Burst Payment] [CoinGecko API] Error: ' . $e->getMessage(), [
+            $this->logger->error('CoinGecko API | Error: ' . $e->getMessage(), [
                 'request' => [
                     'method' => $request->getMethod(),
                     'uri' => $request->getUri(),

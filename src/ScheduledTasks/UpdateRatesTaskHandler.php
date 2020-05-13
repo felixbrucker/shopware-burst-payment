@@ -40,7 +40,7 @@ class UpdateRatesTaskHandler extends ScheduledTaskHandler
         try {
             $this->burstRateService->updateRates();
         } catch (\Throwable $e) {
-            $this->logger->error('[Burst Payment] [Update Rates Task] Error: ' . $e->getMessage(), [
+            $this->logger->error('Update Rates | Error: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);
         }

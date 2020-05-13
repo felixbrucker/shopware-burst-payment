@@ -40,7 +40,7 @@ class MatchUnmatchedOrdersTaskHandler extends ScheduledTaskHandler
         try {
             $this->openOrdersService->matchUnmatchedOrders();
         } catch (\Throwable $e) {
-            $this->logger->error('[Burst Payment] [Match Unmatched Orders Task] Error: ' . $e->getMessage(), [
+            $this->logger->error('Match Unmatched Orders | Error: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);
         }

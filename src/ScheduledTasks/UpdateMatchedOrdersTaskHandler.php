@@ -40,7 +40,7 @@ class UpdateMatchedOrdersTaskHandler extends ScheduledTaskHandler
         try {
             $this->openOrdersService->updateMatchedOrders();
         } catch (\Throwable $e) {
-            $this->logger->error('[Burst Payment] [Update matched Orders Task] Error: ' . $e->getMessage(), [
+            $this->logger->error('Update Matched Orders | Error: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);
         }

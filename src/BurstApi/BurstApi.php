@@ -5,6 +5,7 @@ namespace Burst\BurstPayment\BurstApi;
 use DateTime;
 use DateTimeInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
@@ -41,7 +42,7 @@ class BurstApi
     /**
      * @return array
      * @throws BurstApiException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getUnconfirmedTransactions(): array
     {
@@ -58,7 +59,7 @@ class BurstApi
      * @param DateTimeInterface $dateTime
      * @return array
      * @throws BurstApiException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getTransactionsFrom(DateTimeInterface $dateTime): array
     {
@@ -90,7 +91,7 @@ class BurstApi
      * @param int|null $timestamp
      * @return array
      * @throws BurstApiException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getTransactions(int $offset = 0, int $limit = 100, int $timestamp = null): array
     {
@@ -113,7 +114,7 @@ class BurstApi
      * @param string $transactionId
      * @return array
      * @throws BurstApiException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getTransaction(string $transactionId): array
     {
@@ -125,7 +126,7 @@ class BurstApi
     /**
      * @return mixed
      * @throws BurstApiException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     private function getTime()
     {
@@ -140,7 +141,7 @@ class BurstApi
      * @param array $params
      * @return mixed
      * @throws BurstApiException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     private function doApiCall(string $method, string $requestType, array $params = [])
     {
@@ -154,7 +155,7 @@ class BurstApi
             $result = json_decode((string) $response->getBody(), true);
 
             if (isset($result['errorCode']) || isset($result['errorDescription'])) {
-                $this->logger->error('[Burst Payment] [Burst API] Error: ' . $result['errorDescription'], [
+                $this->logger->error('Burst API | Error: ' . $result['errorDescription'], [
                     'request' => [
                         'method' => $method,
                         'uri' => $this->client->getConfig()['base_uri'],
@@ -174,7 +175,7 @@ class BurstApi
         } catch (RequestException $e) {
             $request = $e->getRequest();
             $response = $e->getResponse();
-            $this->logger->error('[Burst Payment] [Burst API] Error: ' . $e->getMessage(), [
+            $this->logger->error('Burst API | Error: ' . $e->getMessage(), [
                 'request' => [
                     'method' => $request->getMethod(),
                     'uri' => $request->getUri(),
