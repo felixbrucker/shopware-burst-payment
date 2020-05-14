@@ -1,3 +1,17 @@
 # BurstPayment
 
 Burst payment integration for Shopware 6
+
+## Installation
+
+This plugin can be installed via composer or as a .zip file via the administration.
+
+### Composer
+
+```bash
+composer require felixbrucker/shopware-burst-payment
+```
+
+### .zip File
+
+Obtain the latest release zip from [here](https://github.com/felixbrucker/shopware-burst-payment/releases/latest) and upload it in your shopware administration.
