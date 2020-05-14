@@ -2,6 +2,8 @@
 
 ![CI](https://github.com/felixbrucker/shopware-burst-payment/workflows/CI/badge.svg)
 [![Software License](https://img.shields.io/badge/license-GPL--3.0-brightgreen.svg)](LICENSE)
+![Packagist Version](https://img.shields.io/packagist/v/felixbrucker/shopware-burst-payment)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/felixbrucker/shopware-burst-payment)
 
 Burst payment integration for Shopware 6
 
