@@ -1,5 +1,7 @@
 # BurstPayment
 
+![CI](https://github.com/felixbrucker/shopware-burst-payment/workflows/CI/badge.svg)
+
 Burst payment integration for Shopware 6
 
 ## Requirements
