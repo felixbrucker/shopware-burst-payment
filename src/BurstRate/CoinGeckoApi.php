@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Services;
+namespace Burst\BurstPayment\BurstRate;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 
-class CoinGeckoApiService
+class CoinGeckoApi
 {
     /**
      * @var Client

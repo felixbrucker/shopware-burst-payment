@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Burst\BurstPayment\Services;
 
@@ -8,7 +8,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 
 class OrderTransactionService
 {
-    private const PAYMENT_CONTEXT_KEY = 'burst_payment_context';
+    public const PAYMENT_CONTEXT_KEY = 'burst_payment_context';
 
     /**
      * @var EntityRepositoryInterface

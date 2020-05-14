@@ -1,9 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Burst\BurstPayment\Services;
 
 use Burst\BurstPayment\BurstApi\BurstApiException;
-use Burst\BurstPayment\Checkout\BurstPaymentHandler;
+use Burst\BurstPayment\BurstApi\BurstApiFactory;
+use Burst\BurstPayment\Config\PluginConfigService;
+use Burst\BurstPayment\Payment\BurstPaymentHandler;
 use Burst\BurstPayment\Util\Util;
 use DateTime;
 use Psr\Log\LoggerInterface;
@@ -30,7 +32,7 @@ class OpenOrdersService
     /**
      * @var OrderTransactionService
      */
-    private $paymentContext;
+    private $orderTransactionService;
 
     /**
      * @var BurstApiFactory
@@ -38,9 +40,9 @@ class OpenOrdersService
     private $burstApiFactory;
 
     /**
-     * @var SettingsService
+     * @var PluginConfigService
      */
-    private $settingsService;
+    private $pluginConfigService;
 
     /**
      * @var OrderTransactionStateHandler
@@ -50,16 +52,16 @@ class OpenOrdersService
     public function __construct(
         LoggerInterface $logger,
         EntityRepositoryInterface $orderTransactionRepository,
-        OrderTransactionService $paymentContext,
+        OrderTransactionService $orderTransactionService,
         BurstApiFactory $burstApiFactory,
-        SettingsService $settingsService,
+        PluginConfigService $pluginConfigService,
         OrderTransactionStateHandler $orderTransactionStateHandler
     ) {
         $this->logger = $logger;
         $this->orderTransactionRepository = $orderTransactionRepository;
-        $this->paymentContext = $paymentContext;
+        $this->orderTransactionService = $orderTransactionService;
         $this->burstApiFactory = $burstApiFactory;
-        $this->settingsService = $settingsService;
+        $this->pluginConfigService = $pluginConfigService;
         $this->orderTransactionStateHandler = $orderTransactionStateHandler;
     }
 
@@ -74,15 +76,16 @@ class OpenOrdersService
         $oldestOrderTransaction = $unmatchedOrderTransactions[0];
         $oldestOrderOrderDateTime = $oldestOrderTransaction->getOrder()->getOrderDateTime();
 
-        $burstApi = $this->burstApiFactory->getBurstApiForSalesChannel();
+        $burstApi = $this->burstApiFactory->createBurstApiForSalesChannel();
         $unconfirmedTransactions = $burstApi->getUnconfirmedTransactions();
         $transactions = $burstApi->getTransactionsFrom($oldestOrderOrderDateTime);
 
-        $requiredConfirmationCount = $this->settingsService->getConfigValue('requiredConfirmationCount') ?: 6;
-        $cancelUnmatchedOrdersAfterMinutes = $this->settingsService->getConfigValue('cancelUnmatchedOrdersAfterMinutes');
+        $pluginConfig = $this->pluginConfigService->getPluginConfigForSalesChannel();
+        $requiredConfirmationCount = $pluginConfig->getRequiredConfirmationCount() ?: 6;
+        $cancelUnmatchedOrdersAfterMinutes = $pluginConfig->getCancelUnmatchedOrdersAfterMinutes();
         /** @var OrderTransactionEntity $orderTransaction */
         foreach ($unmatchedOrderTransactions as $orderTransaction) {
-            $paymentContext = $this->paymentContext->getBurstPaymentContext($orderTransaction);
+            $paymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
             $amountToPayInNQT = $paymentContext['amountToPayInNQT'] ?? null;
             if ($amountToPayInNQT === null) {
                 $matchingTransaction = null;
@@ -105,7 +108,7 @@ class OpenOrdersService
                     );
                     $this->orderTransactionStateHandler->cancel($orderTransaction->getId(), $context);
                     $paymentContext['transactionState'] = 'cancelled';
-                    $this->paymentContext->setBurstPaymentContext(
+                    $this->orderTransactionService->setBurstPaymentContext(
                         $orderTransaction,
                         $context,
                         $paymentContext
@@ -123,7 +126,7 @@ class OpenOrdersService
             $paymentContext['transactionId'] = $matchingTransaction['transaction'];
             $paymentContext['senderAddress'] = $matchingTransaction['senderRS'];
             $paymentContext['transactionState'] = $this->getTransactionState($matchingTransaction, $requiredConfirmationCount);
-            $this->paymentContext->setBurstPaymentContext(
+            $this->orderTransactionService->setBurstPaymentContext(
                 $orderTransaction,
                 $context,
                 $paymentContext
@@ -150,10 +153,11 @@ class OpenOrdersService
             return;
         }
 
-        $burstApi = $this->burstApiFactory->getBurstApiForSalesChannel();
-        $requiredConfirmationCount = $this->settingsService->getConfigValue('requiredConfirmationCount') ?: 6;
+        $burstApi = $this->burstApiFactory->createBurstApiForSalesChannel();
+        $pluginConfig = $this->pluginConfigService->getPluginConfigForSalesChannel();
+        $requiredConfirmationCount = $pluginConfig->getRequiredConfirmationCount() ?: 6;
         foreach ($matchedOrderTransactions as $orderTransaction) {
-            $paymentContext = $this->paymentContext->getBurstPaymentContext($orderTransaction);
+            $paymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
             try {
                 $transaction = $burstApi->getTransaction($paymentContext['transactionId']);
             } catch (BurstApiException $e) {
@@ -165,7 +169,7 @@ class OpenOrdersService
                         $paymentContext['senderAddress'],
                         $paymentContext['transactionId']
                     );
-                    $this->paymentContext->setBurstPaymentContext(
+                    $this->orderTransactionService->setBurstPaymentContext(
                         $orderTransaction,
                         $context,
                         $paymentContext
@@ -179,7 +183,7 @@ class OpenOrdersService
             }
             $paymentContext['confirmations'] = $confirmationCount;
             $paymentContext['transactionState'] = $this->getTransactionState($transaction, $requiredConfirmationCount);
-            $this->paymentContext->setBurstPaymentContext(
+            $this->orderTransactionService->setBurstPaymentContext(
                 $orderTransaction,
                 $context,
                 $paymentContext
@@ -228,7 +232,7 @@ class OpenOrdersService
         $openBurstOrderTransactions = $this->getOpenBurstOrderTransactions($context);
 
         return array_values(array_filter($openBurstOrderTransactions, function (OrderTransactionEntity $orderTransaction) {
-            $paymentContext = $this->paymentContext->getBurstPaymentContext($orderTransaction);
+            $paymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
 
             return !isset($paymentContext['transactionId']);
         }));
@@ -239,7 +243,7 @@ class OpenOrdersService
         $openBurstOrderTransactions = $this->getOpenBurstOrderTransactions($context);
 
         return array_values(array_filter($openBurstOrderTransactions, function (OrderTransactionEntity $orderTransaction) {
-            $paymentContext = $this->paymentContext->getBurstPaymentContext($orderTransaction);
+            $paymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
 
             return isset($paymentContext['transactionId']);
         }));
@@ -250,7 +254,7 @@ class OpenOrdersService
         return $this->orderTransactionRepository->search(
             (new Criteria())->addFilter(
                 new EqualsFilter('order_transaction.stateMachineState.technicalName', 'open'),
-                new EqualsFilter('order_transaction.paymentMethod.handlerIdentifier', BurstPaymentHandler::class)
+                new EqualsFilter('order_transaction.paymentMethod.handlerIdentifier', BurstPaymentHandler::IDENTIFIER)
             )->addAssociations([
                 'order',
             ])->addSorting(

@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="burst_payment.payment_handler" class="Burst\BurstPayment\Payment\BurstPaymentHandler">
+            <argument type="service" id="Burst\BurstPayment\Services\OrderTransactionService"/>
+            <argument type="service" id="Burst\BurstPayment\BurstRate\BurstRateService"/>
+            <tag name="shopware.payment.method.sync" />
+        </service>
+
+        <service id="Burst\BurstPayment\Payment\CheckoutSubscriber">
+            <argument type="service" id="Burst\BurstPayment\Config\PluginConfigService"/>
+            <argument type="service" id="Burst\BurstPayment\BurstRate\BurstRateService"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+</container>

@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Checkout;
+namespace Burst\BurstPayment\Payment;
 
 use Brick\Math\BigDecimal;
-use Burst\BurstPayment\BurstApi\BurstAmount;
+use Burst\BurstPayment\Currency\BurstAmount;
 use Burst\BurstPayment\BurstRate\BurstRateService;
 use Burst\BurstPayment\Services\OrderTransactionService;
 use RuntimeException;
@@ -17,10 +17,12 @@ use Throwable;
 
 class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
 {
+    public const IDENTIFIER = 'burst_payment.payment_handler';
+
     /**
      * @var OrderTransactionService
      */
-    private $paymentContext;
+    private $orderTransactionService;
 
     /**
      * @var BurstRateService
@@ -28,10 +30,10 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
     private $burstRateService;
 
     public function __construct(
-        OrderTransactionService $paymentContext,
+        OrderTransactionService $orderTransactionService,
         BurstRateService $burstRateService
     ) {
-        $this->paymentContext = $paymentContext;
+        $this->orderTransactionService = $orderTransactionService;
         $this->burstRateService = $burstRateService;
     }
 
@@ -61,22 +63,17 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
 
             $totalPriceInBurstNQTToPay = $this->getUniqueBurstAmountInNQT($totalPrice, $burstRate->getRate());
 
-            $burstPaymentContext = $this->paymentContext->getBurstPaymentContext($orderTransaction);
+            $burstPaymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
             $burstPaymentContext['amountToPayInNQT'] = $totalPriceInBurstNQTToPay;
             $burstPaymentContext['amountToPayInBurst'] = BurstAmount::fromNqtAmount($totalPriceInBurstNQTToPay)->toBurstAmount();
             $burstPaymentContext['burstRateUsed'] = $burstRate->getRate();
             $burstPaymentContext['transactionState'] = 'unmatched';
-            $this->paymentContext->setBurstPaymentContext($orderTransaction, $context, $burstPaymentContext);
+            $this->orderTransactionService->setBurstPaymentContext($orderTransaction, $context, $burstPaymentContext);
         } catch (Throwable $exception) {
             throw new SyncPaymentProcessException($orderTransaction->getId(), $exception->getMessage());
         }
     }
 
-    /**
-     * @param float $amount
-     * @param float $rate
-     * @return string
-     */
     private function getUniqueBurstAmountInNQT(float $amount, float $rate): string
     {
         $totalPriceInBurstBN = BurstAmount::fromAmountWithRate($amount, $rate)->toBigDecimal();
@@ -86,9 +83,6 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
         return BurstAmount::fromBurstAmount((string) $totalPriceInBurstUniqueBN)->toNQTAmount();
     }
 
-    /**
-     * @return string
-     */
     private function getRandomSixDigitNumber(): string
     {
         return sprintf('%s%s%s%s%s%s', mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9));

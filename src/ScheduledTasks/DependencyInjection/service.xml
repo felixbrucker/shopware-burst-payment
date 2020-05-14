@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Burst\BurstPayment\ScheduledTasks\UpdateRatesTask">
+            <tag name="shopware.scheduled.task" />
+        </service>
+        <service id="Burst\BurstPayment\ScheduledTasks\UpdateRatesTaskHandler">
+            <argument type="service" id="scheduled_task.repository" />
+            <argument type="service" id="Burst\BurstPayment\BurstRate\BurstRateService" />
+            <argument type="service" id="burst_payment.logger"/>
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="Burst\BurstPayment\ScheduledTasks\MatchUnmatchedOrdersTask">
+            <tag name="shopware.scheduled.task" />
+        </service>
+        <service id="Burst\BurstPayment\ScheduledTasks\MatchUnmatchedOrdersTaskHandler">
+            <argument type="service" id="scheduled_task.repository" />
+            <argument type="service" id="Burst\BurstPayment\Services\OpenOrdersService" />
+            <argument type="service" id="burst_payment.logger"/>
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="Burst\BurstPayment\ScheduledTasks\UpdateMatchedOrdersTask">
+            <tag name="shopware.scheduled.task" />
+        </service>
+        <service id="Burst\BurstPayment\ScheduledTasks\UpdateMatchedOrdersTaskHandler">
+            <argument type="service" id="scheduled_task.repository" />
+            <argument type="service" id="Burst\BurstPayment\Services\OpenOrdersService" />
+            <argument type="service" id="burst_payment.logger"/>
+            <tag name="messenger.message_handler" />
+        </service>
+    </services>
+</container>

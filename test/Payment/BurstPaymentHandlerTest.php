@@ -1,9 +1,9 @@
 <?php
 
-namespace Burst\BurstPayment\Test\BurstApi;
+namespace Burst\BurstPayment\Test\Payment;
 
 use Burst\BurstPayment\BurstRate\BurstRateService;
-use Burst\BurstPayment\Checkout\BurstPaymentHandler;
+use Burst\BurstPayment\Payment\BurstPaymentHandler;
 use Burst\BurstPayment\Services\OrderTransactionService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

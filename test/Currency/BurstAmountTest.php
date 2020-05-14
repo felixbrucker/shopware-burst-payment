@@ -1,9 +1,9 @@
 <?php
 
-namespace Burst\BurstPayment\Test\BurstApi;
+namespace Burst\BurstPayment\Test\Currency;
 
 use Brick\Math\BigDecimal;
-use Burst\BurstPayment\BurstApi\BurstAmount;
+use Burst\BurstPayment\Currency\BurstAmount;
 use PHPUnit\Framework\TestCase;
 
 /**

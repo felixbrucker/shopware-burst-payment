@@ -23,7 +23,7 @@
                     <template v-if="burstPaymentContext.transactionId">
                         <dt>{{ $t('burst_payment.transaction_id') }}</dt>
                         <dd>
-                            <a v-bind:href="'https://explorer.burstcoin.network/?action=transaction&id=' + burstPaymentContext.transactionId" target="_blank">
+                            <a v-bind:href="'https://explorer.burstcoin.network/?action=transaction&id=' + burstPaymentContext.transactionId" target="_blank" rel="noopener">
                                 {{ burstPaymentContext.transactionId }}
                             </a>
                         </dd>

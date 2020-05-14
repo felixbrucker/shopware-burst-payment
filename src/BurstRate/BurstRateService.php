@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Burst\BurstPayment\BurstRate;
 
-use Burst\BurstPayment\Services\CoinGeckoApiService;
 use Burst\BurstPayment\Util\Util;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
@@ -17,16 +16,16 @@ class BurstRateService
     private $burstRateRepository;
 
     /**
-     * @var CoinGeckoApiService
+     * @var CoinGeckoApi
      */
-    private $coinGeckoApiService;
+    private $coinGeckoApi;
 
     public function __construct(
         EntityRepositoryInterface $burstRateRepository,
-        CoinGeckoApiService $coinGeckoApiService
+        CoinGeckoApi $coinGeckoApi
     ) {
         $this->burstRateRepository = $burstRateRepository;
-        $this->coinGeckoApiService = $coinGeckoApiService;
+        $this->coinGeckoApi = $coinGeckoApi;
     }
 
     public function getBurstRate(string $currency, Context $context): ?BurstRateEntity
@@ -39,12 +38,12 @@ class BurstRateService
 
     public function updateRates(Context $context): void
     {
-        $supportedCurrencies = $this->coinGeckoApiService->getSupportedCurrencies();
+        $supportedCurrencies = $this->coinGeckoApi->getSupportedCurrencies();
 
         if (count($supportedCurrencies) === 0) {
             return;
         }
-        $rates = $this->coinGeckoApiService->getRates(['BURST'], $supportedCurrencies);
+        $rates = $this->coinGeckoApi->getRates(['BURST'], $supportedCurrencies);
 
         /** @var BurstRateEntity[] $burstRates */
         $burstRates = $this->burstRateRepository->search(

@@ -2,13 +2,14 @@
 
 namespace Burst\BurstPayment;
 
-use Burst\BurstPayment\Checkout\BurstPaymentHandler;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Burst\BurstPayment\Installation\BurstPaymentInstaller;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
+use Shopware\Core\Framework\Plugin\Context\UpdateContext;
 use Shopware\Core\Framework\Plugin\Util\PluginIdProvider;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 if (file_exists(__DIR__ . '/../autoload-dist/vendor/autoload.php')) {
     // The file does not exist if the plugin was installed via composer require of the Shopware project
@@ -17,36 +18,42 @@ if (file_exists(__DIR__ . '/../autoload-dist/vendor/autoload.php')) {
 
 class BurstPayment extends Plugin
 {
-    public function install(InstallContext $installContext): void
+    public function build(ContainerBuilder $container): void
     {
-        $context = $installContext->getContext();
-        $pluginId = $this->container->get(PluginIdProvider::class)->getPluginIdByBaseClass(
-            get_class($this),
-            $context
-        );
-        // Check for existing 'Burst' payment method
-        $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('handlerIdentifier', BurstPaymentHandler::class));
-        /** @var EntityRepositoryInterface $paymentMethodRepository */
-        $paymentMethodRepository = $this->container->get('payment_method.repository');
-        $burstPaymentMethodId = $paymentMethodRepository->searchIds($criteria, $context)->firstId();
-        $burstPaymentMethod = [
-            'id' => $burstPaymentMethodId,
-            'handlerIdentifier' => BurstPaymentHandler::class,
-            'pluginId' => $pluginId,
-            'translations' => [
-                'de-DE' => [
-                    'name' => 'Burst-Zahlung'
-                ],
-                'en-GB' => [
-                    'name' => 'Burst payment',
-                ],
-            ],
-        ];
-        $paymentMethodRepository->upsert([
-            $burstPaymentMethod,
-        ], $context);
+        parent::build($container);
 
-        parent::install($installContext);
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__));
+        $loader->load('BurstApi/DependencyInjection/service.xml');
+        $loader->load('BurstRate/DependencyInjection/service.xml');
+        $loader->load('Config/DependencyInjection/service.xml');
+        $loader->load('Logging/DependencyInjection/service.xml');
+        $loader->load('Payment/DependencyInjection/service.xml');
+        $loader->load('Resources/config/snippets.xml');
+        $loader->load('ScheduledTasks/DependencyInjection/service.xml');
+        $loader->load('Services/DependencyInjection/service.xml');
+    }
+
+    public function postInstall(InstallContext $installContext): void
+    {
+        $installer = new BurstPaymentInstaller(
+            $installContext->getContext(),
+            $this->container->get(PluginIdProvider::class),
+            $this->container->get('payment_method.repository')
+        );
+        $installer->postInstall();
+
+        parent::postInstall($installContext);
+    }
+
+    public function postUpdate(UpdateContext $updateContext): void
+    {
+        $installer = new BurstPaymentInstaller(
+            $updateContext->getContext(),
+            $this->container->get(PluginIdProvider::class),
+            $this->container->get('payment_method.repository')
+        );
+        $installer->postUpdate();
+
+        parent::postUpdate($updateContext);
     }
 }

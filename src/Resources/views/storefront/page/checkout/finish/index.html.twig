@@ -2,11 +2,11 @@
 
 {% block page_checkout_finish_details %}
     {{ parent() }}
-    {% if context.paymentMethod.formattedHandlerIdentifier is same as('handler_burst_burstpaymenthandler')
-        and page.extensions.burstData
-        and page.extensions.burstData.data
+    {% if context.paymentMethod.formattedHandlerIdentifier is same as('burst_payment.payment_handler')
+        and page.extensions.burstPaymentData
+        and page.extensions.burstPaymentData.data
     %}
-        {% set burstData = page.extensions.burstData.data %}
+        {% set burstData = page.extensions.burstPaymentData.data %}
         <div class="row">
             <div class="col-md-8 align-self-center">
                 <div role="alert" class="alert alert-info alert-has-icon" style="margin-bottom: 0.5rem">

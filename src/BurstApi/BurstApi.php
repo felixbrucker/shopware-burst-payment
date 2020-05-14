@@ -2,6 +2,7 @@
 
 namespace Burst\BurstPayment\BurstApi;
 
+use Burst\BurstPayment\Config\PluginConfig;
 use DateTime;
 use DateTimeInterface;
 use GuzzleHttp\Client;
@@ -12,9 +13,9 @@ use Psr\Log\LoggerInterface;
 class BurstApi
 {
     /**
-     * @var BurstApiConfig
+     * @var PluginConfig
      */
-    private $config;
+    private $pluginConfig;
 
     /**
      * @var Client
@@ -27,14 +28,14 @@ class BurstApi
     private $logger;
 
     public function __construct(
-        BurstApiConfig $burstApiConfig,
+        PluginConfig $pluginConfig,
         LoggerInterface $logger
     ) {
         $this->logger = $logger;
-        $this->config = $burstApiConfig;
+        $this->pluginConfig = $pluginConfig;
 
         $this->client = new Client([
-            'base_uri' => rtrim($this->config->getBurstWalletUrl(), '/') . '/burst',
+            'base_uri' => rtrim($this->pluginConfig->getBurstWalletUrl(), '/') . '/burst',
             'timeout'  => 60, // In seconds
         ]);
     }
@@ -47,11 +48,11 @@ class BurstApi
     public function getUnconfirmedTransactions(): array
     {
         $result = $this->doApiCall('GET', 'getUnconfirmedTransactions', [
-            'account' => $this->config->getBurstAddress(),
+            'account' => $this->pluginConfig->getBurstAddress(),
         ]);
 
         return array_values(array_filter($result['unconfirmedTransactions'], function ($transaction) {
-            return $transaction['recipientRS'] === $this->config->getBurstAddress();
+            return $transaction['recipientRS'] === $this->pluginConfig->getBurstAddress();
         }));
     }
 
@@ -96,7 +97,7 @@ class BurstApi
     public function getTransactions(int $offset = 0, int $limit = 100, int $timestamp = null): array
     {
         $queryParams = [
-            'account' => $this->config->getBurstAddress(),
+            'account' => $this->pluginConfig->getBurstAddress(),
             'firstIndex' => $offset,
             'lastIndex' => $offset + $limit - 1, // Last index is included
         ];
@@ -106,7 +107,7 @@ class BurstApi
         $result = $this->doApiCall('GET', 'getAccountTransactions', $queryParams);
 
         return array_values(array_filter($result['transactions'], function ($transaction) {
-            return $transaction['recipientRS'] === $this->config->getBurstAddress();
+            return $transaction['recipientRS'] === $this->pluginConfig->getBurstAddress();
         }));
     }
 
