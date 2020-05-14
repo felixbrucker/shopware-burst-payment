@@ -2,6 +2,12 @@
 
 Burst payment integration for Shopware 6
 
+## Requirements
+
+| Version 	| Requirements               	|
+|---------	|----------------------------	|
+| 1.0.0    	| Min. Shopware 6.2, PHP 7.2+ 	|
+
 ## Installation
 
 This plugin can be installed via composer or as a .zip file via the administration.
