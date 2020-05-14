@@ -1,5 +1,5 @@
 {
-    "name": "burst/burst-payment",
+    "name": "felixbrucker/shopware-burst-payment",
     "type": "shopware-platform-plugin",
     "description": "Burst payment processing for Shopware 6",
     "version": "1.0.0",

@@ -1,5 +1,5 @@
 {
-    "name": "burst/burst-payment-autoload-dist",
+    "name": "felixbrucker/shopware-burst-payment-autoload-dist",
     "type": "project",
     "description": "",
     "require": {
