@@ -11,6 +11,7 @@ use DateTime;
 use Psr\Log\LoggerInterface;
 use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionEntity;
 use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionStateHandler;
+use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionStates;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -67,7 +68,7 @@ class OpenOrdersService
 
     public function matchUnmatchedOrders(Context $context): void
     {
-        $unmatchedOrderTransactions = $this->getUnmatchedOrderTransactions($context);
+        $unmatchedOrderTransactions = $this->getOpenBurstOrderTransactions($context);
         if (count($unmatchedOrderTransactions) === 0) {
             return;
         }
@@ -86,6 +87,10 @@ class OpenOrdersService
         /** @var OrderTransactionEntity $orderTransaction */
         foreach ($unmatchedOrderTransactions as $orderTransaction) {
             $paymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
+            if (isset($paymentContext['amountToPayInNQT']) && $paymentContext['amountToPayInNQT'] === '0') {
+                $this->orderTransactionStateHandler->paid($orderTransaction->getId(), $context);
+                continue;
+            }
             $amountToPayInNQT = $paymentContext['amountToPayInNQT'] ?? null;
             if ($amountToPayInNQT === null) {
                 $matchingTransaction = null;
@@ -106,13 +111,13 @@ class OpenOrdersService
                             'orderNumber' => $orderTransaction->getOrder()->getOrderNumber(),
                         ]
                     );
-                    $this->orderTransactionStateHandler->cancel($orderTransaction->getId(), $context);
                     $paymentContext['transactionState'] = 'cancelled';
                     $this->orderTransactionService->setBurstPaymentContext(
                         $orderTransaction,
                         $context,
                         $paymentContext
                     );
+                    $this->orderTransactionStateHandler->cancel($orderTransaction->getId(), $context);
                 }
                 continue;
             }
@@ -131,10 +136,11 @@ class OpenOrdersService
                 $context,
                 $paymentContext
             );
+            $this->orderTransactionStateHandler->process($orderTransaction->getId(), $context);
             if ($paymentContext['transactionState'] !== 'confirmed') {
                 continue;
             }
-            $this->orderTransactionStateHandler->pay($orderTransaction->getId(), $context);
+            $this->orderTransactionStateHandler->paid($orderTransaction->getId(), $context);
             $this->logger->debug(
                 'Marked order as paid after transaction matured',
                 [
@@ -148,7 +154,7 @@ class OpenOrdersService
 
     public function updateMatchedOrders(Context $context): void
     {
-        $matchedOrderTransactions = $this->getMatchedOrderTransactions($context);
+        $matchedOrderTransactions = $this->getProcessingBurstOrderTransactions($context);
         if (count($matchedOrderTransactions) === 0) {
             return;
         }
@@ -174,6 +180,7 @@ class OpenOrdersService
                         $context,
                         $paymentContext
                     );
+                    $this->orderTransactionStateHandler->reopen($orderTransaction->getId(), $context);
                 }
                 continue;
             }
@@ -191,7 +198,7 @@ class OpenOrdersService
             if ($paymentContext['transactionState'] !== 'confirmed') {
                 continue;
             }
-            $this->orderTransactionStateHandler->pay($orderTransaction->getId(), $context);
+            $this->orderTransactionStateHandler->paid($orderTransaction->getId(), $context);
             $this->logger->debug(
                 'Marked order as paid after transaction matured',
                 [
@@ -227,33 +234,11 @@ class OpenOrdersService
         return $found;
     }
 
-    private function getUnmatchedOrderTransactions(Context $context): array
-    {
-        $openBurstOrderTransactions = $this->getOpenBurstOrderTransactions($context);
-
-        return array_values(array_filter($openBurstOrderTransactions, function (OrderTransactionEntity $orderTransaction) {
-            $paymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
-
-            return !isset($paymentContext['transactionId']);
-        }));
-    }
-
-    private function getMatchedOrderTransactions(Context $context): array
-    {
-        $openBurstOrderTransactions = $this->getOpenBurstOrderTransactions($context);
-
-        return array_values(array_filter($openBurstOrderTransactions, function (OrderTransactionEntity $orderTransaction) {
-            $paymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
-
-            return isset($paymentContext['transactionId']);
-        }));
-    }
-
     private function getOpenBurstOrderTransactions(Context $context): array
     {
-        return $this->orderTransactionRepository->search(
+        return array_values($this->orderTransactionRepository->search(
             (new Criteria())->addFilter(
-                new EqualsFilter('order_transaction.stateMachineState.technicalName', 'open'),
+                new EqualsFilter('order_transaction.stateMachineState.technicalName', OrderTransactionStates::STATE_OPEN),
                 new EqualsFilter('order_transaction.paymentMethod.handlerIdentifier', BurstPaymentHandler::IDENTIFIER)
             )->addAssociations([
                 'order',
@@ -261,6 +246,21 @@ class OpenOrdersService
                 new FieldSorting('order_transaction.order.orderDateTime', FieldSorting::ASCENDING)
             ),
             $context
-        )->getElements();
+        )->getElements());
+    }
+
+    private function getProcessingBurstOrderTransactions(Context $context): array
+    {
+        return array_values($this->orderTransactionRepository->search(
+            (new Criteria())->addFilter(
+                new EqualsFilter('order_transaction.stateMachineState.technicalName', OrderTransactionStates::STATE_IN_PROGRESS),
+                new EqualsFilter('order_transaction.paymentMethod.handlerIdentifier', BurstPaymentHandler::IDENTIFIER)
+            )->addAssociations([
+                'order',
+            ])->addSorting(
+                new FieldSorting('order_transaction.order.orderDateTime', FieldSorting::ASCENDING)
+            ),
+            $context
+        )->getElements());
     }
 }

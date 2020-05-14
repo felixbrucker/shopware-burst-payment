@@ -7,33 +7,35 @@
         and page.extensions.burstPaymentData.data
     %}
         {% set burstData = page.extensions.burstPaymentData.data %}
-        <div class="row">
-            <div class="col-md-8 align-self-center">
-                <div role="alert" class="alert alert-info alert-has-icon" style="margin-bottom: 0.5rem">
-                    {% sw_icon 'info' %}
-                    <div class="alert-content-container">
-                        <div class="alert-heading h5">
-                            {{ "burst_payment.checkout.complete_payment"|trans }}
-                        </div>
-                        <div class="alert-content">
-                            <div class="align-self-center">
-                                {{ "burst_payment.checkout.send_amount"|trans({
-                                    '%burstAmount%': burstData.amountToPayInBurst,
-                                    '%burstAddress%': burstData.burstAddressToSendTo
-                                })|raw }}<br><br>
-                                {{ "burst_payment.checkout.order_cancelled_after"|trans({
-                                    '%minutes%': burstData.cancelUnmatchedOrdersAfterMinutes
-                                })|raw }}<br><br>
-                                {{ "burst_payment.checkout.rate_used"|trans }}:
-                                1 BURST = {{ burstData.burstRateUsed }} {{context.currency.symbol}}
+        {% if burstData.amountToPayInNQT %}
+            <div class="row">
+                <div class="col-md-8 align-self-center">
+                    <div role="alert" class="alert alert-info alert-has-icon" style="margin-bottom: 0.5rem">
+                        {% sw_icon 'info' %}
+                        <div class="alert-content-container">
+                            <div class="alert-heading h5">
+                                {{ "burst_payment.checkout.complete_payment"|trans }}
+                            </div>
+                            <div class="alert-content">
+                                <div class="align-self-center">
+                                    {{ "burst_payment.checkout.send_amount"|trans({
+                                        '%burstAmount%': burstData.amountToPayInBurst,
+                                        '%burstAddress%': burstData.burstAddressToSendTo
+                                    })|raw }}<br><br>
+                                    {{ "burst_payment.checkout.order_cancelled_after"|trans({
+                                        '%minutes%': burstData.cancelUnmatchedOrdersAfterMinutes
+                                    })|raw }}<br><br>
+                                    {{ "burst_payment.checkout.rate_used"|trans }}:
+                                    1 BURST = {{ burstData.burstRateUsed }} {{context.currency.symbol}}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <img src="{{ burstData.qrCodeDataUri }}">
+                </div>
             </div>
-            <div class="col-md-4">
-                <img src="{{ burstData.qrCodeDataUri }}">
-            </div>
-        </div>
+        {% endif %}
     {% endif %}
 {% endblock %}

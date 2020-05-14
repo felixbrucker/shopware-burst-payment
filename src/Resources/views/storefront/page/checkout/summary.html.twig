@@ -7,6 +7,7 @@
         and page.extensions.burstPaymentData.data
     %}
         {% set burstData = page.extensions.burstPaymentData.data %}
+        {% if burstData.estimatedAmountToPayInBurst %}
         <dt class="col-7 checkout-aside-summary-label">
             {{ "burst_payment.checkout.estimated_amount_in_burst"|trans|sw_sanitize }}
         </dt>
@@ -14,5 +15,14 @@
         <dd class="col-5 checkout-aside-summary-value">
             {{ burstData.estimatedAmountToPayInBurst }} BURST
         </dd>
+        {% elseif burstData.amountToPayInNQT %}
+            <dt class="col-7 checkout-aside-summary-label">
+                {{ "burst_payment.checkout.amount_in_burst"|trans|sw_sanitize }}
+            </dt>
+
+            <dd class="col-5 checkout-aside-summary-value">
+                {{ burstData.amountToPayInBurst }} BURST
+            </dd>
+        {% endif %}
     {% endif %}
 {% endblock %}

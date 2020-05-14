@@ -77,6 +77,9 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
     private function getUniqueBurstAmountInNQT(float $amount, float $rate): string
     {
         $totalPriceInBurstBN = BurstAmount::fromAmountWithRate($amount, $rate)->toBigDecimal();
+        if ($totalPriceInBurstBN->isZero()) {
+            return '0';
+        }
         $uniqueSixDigitNumber = $this->getRandomSixDigitNumber();
         $totalPriceInBurstUniqueBN = $totalPriceInBurstBN->plus(BigDecimal::ofUnscaledValue($uniqueSixDigitNumber, 8));
 

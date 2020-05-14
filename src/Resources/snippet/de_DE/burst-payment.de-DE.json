@@ -5,7 +5,8 @@
             "send_amount": "Bitte sende exakt <strong>%burstAmount% BURST</strong> an <strong>%burstAddress%</strong> um die Zahlung abzuschließen.",
             "order_cancelled_after": "<strong>Hinweis:</strong> Die Bestellung wird automatisch storniert, wenn innerhlab der nächsten %minutes% Minuten keine Zahlung erfolgt.",
             "rate_used": "Verwendeter Umrechnungskurs",
-            "estimated_amount_in_burst": "Geschätzter Betrag in BURST"
+            "estimated_amount_in_burst": "Geschätzter Betrag in BURST",
+            "amount_in_burst": "Betrag in BURST"
         }
     }
 }
