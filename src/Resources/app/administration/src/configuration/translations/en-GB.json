@@ -15,7 +15,12 @@
                 "success": "The configuration was saved successfully.",
                 "error": "The configuration could not be saved, because the following error occurred: {errorMessage}"
             },
-            "unknown-error": "Unbekannter Fehler"
+            "wallet-connection": {
+                "reachable": "Successfully connected to the wallet.",
+                "unreachable": "No connection could be established with the wallet ({burstWalletUrl})."
+            },
+            "invalid-burst-address": "Invalid Burst address: {burstAddress}. Please use the BURST-XXXX-XXXX-XXXX-XXXXX notation.",
+            "unknown-error": "Unknown error"
         }
     }
 }

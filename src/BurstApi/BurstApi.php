@@ -40,6 +40,17 @@ class BurstApi
         ]);
     }
 
+    public function isReachable(): bool
+    {
+        try {
+            $this->getTime();
+
+            return true;
+        } catch (RequestException $e) {
+            return false;
+        }
+    }
+
     /**
      * @return array
      * @throws BurstApiException
@@ -179,14 +190,14 @@ class BurstApi
             $this->logger->error('Burst API | Error: ' . $e->getMessage(), [
                 'request' => [
                     'method' => $request->getMethod(),
-                    'uri' => $request->getUri(),
+                    'uri' => (string) $e->getRequest()->getUri(),
                     'headers' => $request->getHeaders(),
                 ],
-                'response' => [
+                'response' => $response ? [
                     'statusCode' => $response->getStatusCode(),
                     'body' => $response->getBody(),
                     'headers' => $response->getHeaders(),
-                ],
+                ] : null,
                 'stackTrace' => $e->getTraceAsString(),
             ]);
 

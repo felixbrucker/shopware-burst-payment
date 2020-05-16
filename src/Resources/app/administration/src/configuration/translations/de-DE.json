@@ -15,6 +15,11 @@
                 "success": "Die Konfiguration wurde erfolgreich gespeichert.",
                 "error": "Die Konfiguration konnte nicht gespeichert werden, da folgender Fehler aufgetreten ist: {errorMessage}"
             },
+            "wallet-connection": {
+                "reachable": "Verbindung zum Wallet erfolgreich.",
+                "unreachable": "Es kann keine Verbindung mit dem Wallet unter {burstWalletUrl} hergestellt werden."
+            },
+            "invalid-burst-address": "Ungültige Burst Adresse: {burstAdresse}. Bitte verwenden Sie die BURST-XXXX-XXXX-XXXX-XXXX-XXXXX Notation.",
             "unknown-error": "Unbekannter Fehler"
         }
     }

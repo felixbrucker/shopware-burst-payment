@@ -20,7 +20,7 @@
             <defaultValue>https://wallet.burst-alliance.org:8125</defaultValue>
             <label>Burst wallet</label>
             <label lang="de-DE">Burst Wallet</label>
-            <helpText>Enter your Burst wallet url here. It is greatly recommended to run your own wallet for increased security and reliability.</helpText>
+            <helpText>Enter your Burst wallet url here. It is strongly recommended to run your own wallet for increased security and reliability.</helpText>
             <helpText lang="de-DE">Tragen Sie hier Ihre Burst Wallet URL ein. Es wird dringend empfohlen, Ihr eigenes Wallet zu betreiben, um die Sicherheit und Zuverlässigkeit zu erhöhen.</helpText>
         </input-field>
         <input-field type="int">

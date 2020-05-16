@@ -8,5 +8,9 @@
             <argument type="service" id="Burst\BurstPayment\Config\PluginConfigService"/>
             <argument type="service" id="burst_payment.logger"/>
         </service>
+
+        <service id="Burst\BurstPayment\BurstApi\BurstApiController" public="true">
+            <argument type="service" id="burst_payment.logger"/>
+        </service>
     </services>
 </container>
