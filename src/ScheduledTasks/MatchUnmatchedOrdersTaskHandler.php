@@ -44,6 +44,7 @@ class MatchUnmatchedOrdersTaskHandler extends ScheduledTaskHandler
         } catch (Throwable $e) {
             $this->logger->error('Match Unmatched Orders | Error: ' . $e->getMessage(), [
                 'exception' => $e,
+                'stackTrace' => $e->getTraceAsString(),
             ]);
         }
     }

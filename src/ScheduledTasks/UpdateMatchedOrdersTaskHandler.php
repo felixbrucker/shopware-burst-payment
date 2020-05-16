@@ -44,6 +44,7 @@ class UpdateMatchedOrdersTaskHandler extends ScheduledTaskHandler
         } catch (Throwable $e) {
             $this->logger->error('Update Matched Orders | Error: ' . $e->getMessage(), [
                 'exception' => $e,
+                'stackTrace' => $e->getTraceAsString(),
             ]);
         }
     }

@@ -94,6 +94,7 @@ class CoinGeckoApi
                     'body' => $response->getBody(),
                     'headers' => $response->getHeaders(),
                 ],
+                'stackTrace' => $e->getTraceAsString(),
             ]);
 
             throw $e;

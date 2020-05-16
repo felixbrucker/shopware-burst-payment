@@ -44,6 +44,7 @@ class UpdateRatesTaskHandler extends ScheduledTaskHandler
         } catch (Throwable $e) {
             $this->logger->error('Update Rates | Error: ' . $e->getMessage(), [
                 'exception' => $e,
+                'stackTrace' => $e->getTraceAsString(),
             ]);
         }
     }
