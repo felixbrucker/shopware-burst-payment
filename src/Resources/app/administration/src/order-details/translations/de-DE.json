@@ -1,6 +1,5 @@
 {
     "burst_payment": {
-        "burst_payments": "Burst Zahlungen",
         "payment_info_title": "Burst Zahlungsinformationen",
         "amount_to_pay": "Zu zahlender Betrag",
         "address_of_buyer": "Adresse des Käufers",
