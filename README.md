@@ -22,6 +22,7 @@ This plugin can be installed via composer or as a .zip file via the administrati
 ```bash
 composer require felixbrucker/shopware-burst-payment
 bin/console plugin:install --activate BurstPayment
+cd vendor/felixbrucker/shopware-burst-payment && npm install
 ./psh.phar administration:build
 bin/console assets:install
 ```
