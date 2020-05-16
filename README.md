@@ -24,7 +24,6 @@ composer require felixbrucker/shopware-burst-payment
 bin/console plugin:install --activate BurstPayment
 cd vendor/felixbrucker/shopware-burst-payment && npm install
 ./psh.phar administration:build
-bin/console assets:install
 ```
 
 ### .zip File
