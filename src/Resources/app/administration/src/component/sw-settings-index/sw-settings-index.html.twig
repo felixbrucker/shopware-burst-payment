@@ -1,0 +1,13 @@
+{% block sw_settings_content_card_slot_plugins %}
+    {% parent %}
+
+    <sw-settings-item
+        :label="$t('burst_payment.burst_payments')"
+        :to="{ name: 'sw.plugin.settings', params: { namespace: 'BurstPayment' } }"
+        :backgroundEnabled="false"
+    >
+        <template #icon>
+            <img :src="pluginIconPath">
+        </template>
+    </sw-settings-item>
+{% endblock %}

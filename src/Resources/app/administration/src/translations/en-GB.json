@@ -1,5 +1,6 @@
 {
     "burst_payment": {
+        "burst_payments": "Burst Payments",
         "payment_info_title": "Burst Payment Info",
         "amount_to_pay": "Amount to pay",
         "address_of_buyer": "Address of the buyer",
