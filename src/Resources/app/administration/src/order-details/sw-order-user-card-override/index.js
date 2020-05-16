@@ -29,12 +29,12 @@ Shopware.Component.override('sw-order-user-card', {
         transactionStateString() {
             const transactionState = this.burstPaymentContext.transactionState;
             if (transactionState !== 'pending') {
-                return this.$t(`burst_payment.transaction_states.${transactionState}`);
+                return this.$t(`burst-payment.transaction-states.${transactionState}`);
             }
 
             const confirmations = this.burstPaymentContext.confirmations;
 
-            return this.$t(`burst_payment.transaction_states.${transactionState}`, {
+            return this.$t(`burst-payment.transaction-states.${transactionState}`, {
                 confirmations,
             });
         },

@@ -1,0 +1,39 @@
+<sw-page>
+    <template #smart-bar-header>
+        <h2>
+            {{ $t('sw-settings.index.title') }}
+            <sw-icon
+                small
+                name="small-arrow-medium-right"
+            />
+            {{ $t('burst-payment.smart-bar.title') }}
+        </h2>
+    </template>
+
+    <template #smart-bar-actions>
+        <sw-button :routerLink="{ name: 'sw.settings.index' }">
+            {{ $t('burst-payment.smart-bar.cancel') }}
+        </sw-button>
+
+        <sw-button-process
+            variant="primary"
+            :isLoading="isLoading"
+            :disabled="isLoading"
+            :processSuccess="isSaveSuccessful"
+            @click="saveConfig"
+        >
+            {{ $t('burst-payment.smart-bar.save') }}
+        </sw-button-process>
+    </template>
+
+    <template #content>
+        <sw-card-view>
+            <sw-system-config
+                ref="systemConfig"
+                salesChannelSwitchable
+                :domain="configDomain"
+                @config-changed="updateConfig"
+            />
+        </sw-card-view>
+    </template>
+</sw-page>

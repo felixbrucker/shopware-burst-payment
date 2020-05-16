@@ -1,5 +1,21 @@
 {
-    "burst_payment": {
-        "burst_payments": "Burst Zahlungen"
+    "burst-payment": {
+        "burst-payments": "Burst Zahlungen",
+        "smart-bar": {
+            "title": "Burst Zahlungen",
+            "cancel": "Abbrechen",
+            "save": "Speichern"
+        },
+        "titles": {
+            "success": "Erfolg",
+            "error": "Fehler"
+        },
+        "messages": {
+            "save": {
+                "success": "Die Konfiguration wurde erfolgreich gespeichert.",
+                "error": "Die Konfiguration konnte nicht gespeichert werden, da folgender Fehler aufgetreten ist: {errorMessage}"
+            },
+            "unknown-error": "Unbekannter Fehler"
+        }
     }
 }

@@ -1,12 +1,12 @@
 {
-    "burst_payment": {
-        "payment_info_title": "Burst Payment Info",
-        "amount_to_pay": "Amount to pay",
-        "address_of_buyer": "Address of the buyer",
-        "rate_used": "Rate used",
-        "transaction_id": "Transaction ID",
-        "transaction_state": "Transaction state",
-        "transaction_states": {
+    "burst-payment": {
+        "payment-info-title": "Burst Payment Info",
+        "amount-to-pay": "Amount to pay",
+        "address-of-buyer": "Address of the buyer",
+        "rate-used": "Rate used",
+        "transaction-id": "Transaction ID",
+        "transaction-state": "Transaction state",
+        "transaction-states": {
             "unmatched": "No matching transaction detected yet",
             "unconfirmed": "Transaction is still unconfirmed",
             "pending": "Transaction is confirming ({confirmations} confirms)",
