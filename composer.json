@@ -44,6 +44,6 @@
         }
     },
     "scripts": {
-        "test:unit": "./vendor/bin/phpunit --config phpunit.xml --testdox"
+        "test:unit": "./vendor/bin/phpunit --config phpunit.xml --testdox --coverage-clover=coverage.unit.xml"
     }
 }

@@ -3,3 +3,4 @@
 /vendor
 /node_modules
 /src/Resources/public/administration
+/coverage.*.xml

@@ -12,3 +12,5 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
       - name: Run unit tests
         run: composer run test:unit
+      - name: Report code coverage
+        run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
