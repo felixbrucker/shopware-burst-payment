@@ -17,7 +17,7 @@ cd "$PLUGIN_DIR" && npm install
 echo "Installing Shopware v$SHOPWARE_VERSION"
 git clone --single-branch --branch "$SHOPWARE_VERSION" https://github.com/shopware/development.git "$SHOPWARE_DEVELOPMENT_DIR"
 ln -s "$PLUGIN_DIR" "$SHOPWARE_DEVELOPMENT_DIR/custom/plugins/BurstPayment"
-printf "const:\n    APP_ENV: \"dev\"\n    APP_URL: \"http://localhost\"\n    DB_HOST: \"localhost\"\n    DB_PORT: \"3306\"\n    DB_NAME: \"shopware6release\"\n    DB_USER: \"root\"\n    DB_PASSWORD: \"shopware\"" > "$SHOPWARE_DEVELOPMENT_DIR/.psh.yaml.override"
+printf "const:\n    APP_ENV: \"dev\"\n    APP_URL: \"http://localhost\"\n    DB_HOST: \"127.0.0.1\"\n    DB_PORT: \"3306\"\n    DB_NAME: \"shopware6release\"\n    DB_USER: \"root\"\n    DB_PASSWORD: \"shopware\"" > "$SHOPWARE_DEVELOPMENT_DIR/.psh.yaml.override"
 cd "$SHOPWARE_DEVELOPMENT_DIR" && ./psh.phar install
 cd "$SHOPWARE_DEVELOPMENT_DIR" && bin/console plugin:install --activate BurstPayment
 
