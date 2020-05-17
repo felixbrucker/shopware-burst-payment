@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 SHOPWARE_VERSION=6.2
 TAG="${GITHUB_REF##*/}"
@@ -25,9 +26,11 @@ cd "$SHOPWARE_DEVELOPMENT_DIR" && ./psh.phar administration:build
 
 echo "Building the release zip"
 PLUGIN_DIST_DIR="$TMP_DIR/burst-payment"
+ls -lah "$PLUGIN_DIR"
 mkdir "$PLUGIN_DIST_DIR"
 cd /
 mv "$PLUGIN_DIR" "$PLUGIN_DIST_DIR"
+ls -lah "$PLUGIN_DIST_DIR"
 cd "$TMP_DIR"
 zip -r "burst-payment-$TAG.zip" "burst-payment" --exclude burst-payment/vendor/\* burst-payment/node_modules/\* bin burst-payment/test/\* burst-payment/.editorconfig burst-payment/.gitignore burst-payment/coverage\*.xml burst-payment/phpunit.xml burst-payment/.git/\* burst-payment/.github/\*
 cp "burst-payment-$TAG.zip" "$PLUGIN_DIR/"
