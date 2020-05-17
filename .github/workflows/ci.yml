@@ -18,12 +18,12 @@ jobs:
   release:
     needs: test
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    #if: startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v2
       - name: Get the tag name
         id: tag
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
       - name: Install php dependencies
         run: cd autoload-dist && composer install && cd .. && cp -R autoload-dist/vendor vendor
       - name: Install js dependencies
