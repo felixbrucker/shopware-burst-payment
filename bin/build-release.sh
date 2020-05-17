@@ -13,9 +13,9 @@ TMP_DIR="$(mktemp -d)"
 SHOPWARE_DEVELOPMENT_DIR="$TMP_DIR/shopware-development"
 
 echo "Installing plugin dependencies"
-cd "$PLUGIN_DIR" && composer install
 cd "$PLUGIN_DIR/autoload-dist" && composer install
-cd "$PLUGIN_DIR" && npm install
+cp -R autoload-dist/vendor vendor
+npm install
 
 echo "Installing Shopware v$SHOPWARE_VERSION"
 git clone --single-branch --branch "$SHOPWARE_VERSION" https://github.com/shopware/development.git "$SHOPWARE_DEVELOPMENT_DIR"
@@ -31,7 +31,7 @@ echo "Building the administration bundle"
 cd "$SHOPWARE_DEVELOPMENT_DIR" && ./psh.phar administration:build
 
 echo "Building the release zip"
-rm -rf vendor && cp -R autoload-dist/vendor vendor
+
 PLUGIN_DIST_DIR="$TMP_DIR/burst-payment"
 cd /
 mv "$PLUGIN_DIR" "$PLUGIN_DIST_DIR"
