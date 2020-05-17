@@ -13,9 +13,8 @@ SHOPWARE_DEVELOPMENT_DIR="$TMP_DIR/shopware-development"
 
 echo "Installing plugin dependencies"
 cd "$PLUGIN_DIR/autoload-dist" && composer install
-ls -lah .
-cp -r "$PLUGIN_DIR/autoload-dist/vendor" "$PLUGIN_DIR/vendor"
-npm install
+cp -R "$PLUGIN_DIR/autoload-dist/vendor" "$PLUGIN_DIR/vendor"
+cd "$PLUGIN_DIR" && npm install
 
 echo "Installing Shopware v$SHOPWARE_VERSION"
 git clone --single-branch --branch "$SHOPWARE_VERSION" https://github.com/shopware/development.git "$SHOPWARE_DEVELOPMENT_DIR"
@@ -37,4 +36,3 @@ mv "$PLUGIN_DIR" "$PLUGIN_DIST_DIR"
 cd "$TMP_DIR"
 zip -r "burst-payment-$TAG.zip" "burst-payment" --exclude burst-payment/vendor/\* burst-payment/node_modules/\* bin burst-payment/test/\* burst-payment/.editorconfig burst-payment/.gitignore burst-payment/coverage\*.xml burst-payment/phpunit.xml burst-payment/.git/\* burst-payment/.github/\*
 cp "burst-payment-$TAG.zip" "$PLUGIN_DIR/"
-
