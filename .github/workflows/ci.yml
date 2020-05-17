@@ -16,7 +16,7 @@ jobs:
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
 
   release:
-    needs: test
+    #needs: test
     runs-on: ubuntu-latest
     #if: startsWith(github.ref, 'refs/tags/')
     services:
