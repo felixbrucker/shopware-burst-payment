@@ -31,9 +31,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         #if: startsWith(github.ref, 'refs/tags/')
-      - name: Start MySQL
-        #if: startsWith(github.ref, 'refs/tags/')
-        run: sudo /etc/init.d/mysql start
       - name: Build release zip
         #if: startsWith(github.ref, 'refs/tags/')
         run: bin/build-release.sh
