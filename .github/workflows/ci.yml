@@ -44,6 +44,8 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
       - name: Build release zip
         run: bin/build-release-zip.sh
+        env:
+            TAG: ${{ steps.tag.outputs.VERSION }}
       - name: Create Github Release
         id: create_release
         uses: actions/create-release@v1
