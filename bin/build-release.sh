@@ -8,15 +8,12 @@ echo "Building v$TAG with Shopware v$SHOPWARE_VERSION"
 
 DB_PORT="${DB_PORT:-3306}"
 PLUGIN_DIR="$(pwd)"
-ls -lah "$PLUGIN_DIR"
 TMP_DIR="$(mktemp -d)"
 SHOPWARE_DEVELOPMENT_DIR="$TMP_DIR/shopware-development"
 
 echo "Installing plugin dependencies"
 cd "$PLUGIN_DIR/autoload-dist" && composer install
-ls -lah "$PLUGIN_DIR"
-ls -lah "$PLUGIN_DIR/autoload-dist"
-cp -R autoload-dist/vendor vendor
+cp -r autoload-dist/vendor vendor
 npm install
 
 echo "Installing Shopware v$SHOPWARE_VERSION"
@@ -33,7 +30,6 @@ echo "Building the administration bundle"
 cd "$SHOPWARE_DEVELOPMENT_DIR" && ./psh.phar administration:build
 
 echo "Building the release zip"
-
 PLUGIN_DIST_DIR="$TMP_DIR/burst-payment"
 cd /
 mv "$PLUGIN_DIR" "$PLUGIN_DIST_DIR"
