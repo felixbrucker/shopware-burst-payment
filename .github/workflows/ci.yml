@@ -28,15 +28,15 @@ jobs:
           - 3306
     steps:
       - uses: actions/checkout@v2
-        if: startsWith(github.ref, 'refs/tags/')
+        #if: startsWith(github.ref, 'refs/tags/')
       - name: Start MySQL
-        if: startsWith(github.ref, 'refs/tags/')
+        #if: startsWith(github.ref, 'refs/tags/')
         run: sudo /etc/init.d/mysql start
       - name: Build release zip
-        if: startsWith(github.ref, 'refs/tags/')
+        #if: startsWith(github.ref, 'refs/tags/')
         run: bin/build-release.sh
       - name: Create Release
-        if: startsWith(github.ref, 'refs/tags/')
+        #if: startsWith(github.ref, 'refs/tags/')
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -47,7 +47,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Upload Release zip
-        if: startsWith(github.ref, 'refs/tags/')
+        #if: startsWith(github.ref, 'refs/tags/')
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
