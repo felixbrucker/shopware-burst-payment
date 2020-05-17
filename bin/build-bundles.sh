@@ -2,18 +2,19 @@
 set -e
 
 SHOPWARE_VERSION=6.2
+PLUGIN_NAME="BurstPayment"
 
 TAG="${TAG:-dev}"
-echo "Building BurstPayment $TAG bundles with Shopware v$SHOPWARE_VERSION"
+echo "Building $PLUGIN_NAME $TAG bundles with Shopware $SHOPWARE_VERSION"
 
 DB_PORT="${DB_PORT:-3306}"
 PLUGIN_DIR="$(pwd)"
 TMP_DIR="$(mktemp -d)"
 SHOPWARE_DEVELOPMENT_DIR="$TMP_DIR/shopware-development"
 
-echo "Installing Shopware v$SHOPWARE_VERSION"
+echo "Installing Shopware $SHOPWARE_VERSION"
 git clone --single-branch --branch "$SHOPWARE_VERSION" https://github.com/shopware/development.git "$SHOPWARE_DEVELOPMENT_DIR"
-ln -s "$PLUGIN_DIR" "$SHOPWARE_DEVELOPMENT_DIR/custom/plugins/BurstPayment"
+ln -s "$PLUGIN_DIR" "$SHOPWARE_DEVELOPMENT_DIR/custom/plugins/$PLUGIN_NAME"
 printf "const:\n    APP_ENV: \"dev\"\n    APP_URL: \"http://127.0.0.1\"\n    DB_HOST: \"127.0.0.1\"\n    DB_PORT: \"$DB_PORT\"\n    DB_NAME: \"shopware6release\"\n    DB_USER: \"root\"\n    DB_PASSWORD: \"shopware\"" > "$SHOPWARE_DEVELOPMENT_DIR/.psh.yaml.override"
 cd "$SHOPWARE_DEVELOPMENT_DIR" && ./psh.phar init-composer
 cd "$SHOPWARE_DEVELOPMENT_DIR" && ./psh.phar init-database
