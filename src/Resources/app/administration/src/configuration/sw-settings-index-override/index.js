@@ -1,11 +1,12 @@
 import template from './sw-settings-index.html.twig';
+import pluginIcon from '../../../../../config/plugin.png';
 
 Shopware.Component.override('sw-settings-index', {
     template,
 
     data() {
         return {
-            pluginIconPath: 'bundles/burstpayment/static/img/plugin.png',
+            pluginIcon,
         };
     },
 });
