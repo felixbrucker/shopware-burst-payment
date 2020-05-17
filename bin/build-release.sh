@@ -14,6 +14,8 @@ SHOPWARE_DEVELOPMENT_DIR="$TMP_DIR/shopware-development"
 
 echo "Installing plugin dependencies"
 cd "$PLUGIN_DIR/autoload-dist" && composer install
+ls -lah "$PLUGIN_DIR"
+ls -lah "$PLUGIN_DIR/autoload-dist"
 cp -R autoload-dist/vendor vendor
 npm install
 
