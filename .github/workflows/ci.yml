@@ -31,18 +31,26 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v2
+      - name: Get the tag name
+        id: tag
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Build release zip
-        run: bin/build-release.sh
+        run: bin/install-dependencies.sh
+      - name: Build plugin bundles
+        run: bin/build-bundles.sh
         env:
+          TAG: ${{ steps.tag.outputs.VERSION }}
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+      - name: Build release zip
+        run: bin/build-release-zip.sh
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.tag.outputs.VERSION }}
+          release_name: Release ${{ steps.tag.outputs.VERSION }}
           draft: false
           prerelease: false
       - name: Upload Release zip
@@ -52,6 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./burst-payment-${{ github.ref }}.zip
-          asset_name: burst-payment-${{ github.ref }}.zip
+          asset_path: ./burst-payment-${{ steps.tag.outputs.VERSION }}.zip
+          asset_name: burst-payment-${{ steps.tag.outputs.VERSION }}.zip
           asset_content_type: application/zip
