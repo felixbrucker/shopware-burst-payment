@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:8
+        image: mariadb:10
         env:
           MYSQL_ROOT_PASSWORD: shopware
           MYSQL_USER: shopware
