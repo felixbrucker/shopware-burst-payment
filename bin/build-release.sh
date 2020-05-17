@@ -30,3 +30,4 @@ cd /
 mv "$PLUGIN_DIR" "$PLUGIN_DIST_DIR"
 cd "$TMP_DIR"
 zip -r "burst-payment-$TAG.zip" "burst-payment" --exclude burst-payment/vendor/\* burst-payment/node_modules/\* bin burst-payment/test/\* burst-payment/.editorconfig burst-payment/.gitignore burst-payment/coverage\*.xml burst-payment/phpunit.xml burst-payment/.git/\* burst-payment/.github/\*
+cp "burst-payment-$TAG.zip" "$PLUGIN_DIR/"
