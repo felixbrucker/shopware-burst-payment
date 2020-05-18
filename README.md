@@ -5,26 +5,11 @@
 [![Packagist Version](https://img.shields.io/packagist/v/felixbrucker/shopware-burst-payment)](https://packagist.org/packages/felixbrucker/shopware-burst-payment)
 [![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/felixbrucker/shopware-burst-payment)](https://packagist.org/packages/felixbrucker/shopware-burst-payment)
 
-<a href="https://www.burst-coin.org" target="_blank"><img src="https://www.burst-coin.org/wp-content/uploads/2019/11/BMF_LOGO_VAR_5.png" width="80"/></a> payment integration for Shopware 6
+<a href="https://www.burst-coin.org" target="_blank"><img src="https://github.com/felixbrucker/shopware-burst-payment/wiki/assets/img/burst.png" width="80"/></a> payment integration for Shopware 6
 
-## Requirements
+# Getting started
 
-| Version 	| Requirements               	|
-|---------	|----------------------------	|
-| 1.0.0    	| Min. Shopware 6.2, PHP 7.2+ 	|
-
-## Installation
-
-This plugin can be installed via composer or as a .zip file via the administration.
-
-### Composer
-
-```bash
-composer require felixbrucker/shopware-burst-payment
-cd vendor/felixbrucker/shopware-burst-payment && npm install && npm build
-bin/console plugin:install --activate BurstPayment
-```
-
-### .zip File
-
-Obtain the latest release zip from [here](https://github.com/felixbrucker/shopware-burst-payment/releases/latest) and upload it in your shopware administration.
+* [System Requirements](https://github.com/felixbrucker/shopware-burst-payment/wiki/System-Requirements)
+* [Installation](https://github.com/felixbrucker/shopware-burst-payment/wiki/Installation)
+* [Configuration](https://github.com/felixbrucker/shopware-burst-payment/wiki/Configuration)
+* [Payment workflow](https://github.com/felixbrucker/shopware-burst-payment/wiki/Payment-workflow)
