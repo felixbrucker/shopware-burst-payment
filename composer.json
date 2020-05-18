@@ -15,7 +15,9 @@
         "brick/math": "^0.8.15",
         "chillerlan/php-qrcode": "^3.2.3",
         "shopware/core": "^6.2.0",
-        "shopware/storefront": "^6.2.0"
+        "shopware/storefront": "^6.2.0",
+        "ext-fileinfo": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
@@ -44,6 +46,6 @@
         }
     },
     "scripts": {
-        "test:unit": "./vendor/bin/phpunit --config phpunit.xml --testdox --coverage-clover=coverage.unit.xml"
+        "test:unit": "./vendor/bin/phpunit --config phpunit.unit.xml --testdox"
     }
 }

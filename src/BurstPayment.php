@@ -3,6 +3,7 @@
 namespace Burst\BurstPayment;
 
 use Burst\BurstPayment\Installation\BurstPaymentInstaller;
+use Shopware\Core\Content\Media\File\FileSaver;
 use Shopware\Core\Framework\Plugin;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\Framework\Plugin\Context\UpdateContext;
@@ -38,7 +39,9 @@ class BurstPayment extends Plugin
         $installer = new BurstPaymentInstaller(
             $installContext->getContext(),
             $this->container->get(PluginIdProvider::class),
-            $this->container->get('payment_method.repository')
+            $this->container->get('payment_method.repository'),
+            $this->container->get('media.repository'),
+            $this->container->get(FileSaver::class)
         );
         $installer->postInstall();
 
@@ -50,7 +53,9 @@ class BurstPayment extends Plugin
         $installer = new BurstPaymentInstaller(
             $updateContext->getContext(),
             $this->container->get(PluginIdProvider::class),
-            $this->container->get('payment_method.repository')
+            $this->container->get('payment_method.repository'),
+            $this->container->get('media.repository'),
+            $this->container->get(FileSaver::class)
         );
         $installer->postUpdate();
 
