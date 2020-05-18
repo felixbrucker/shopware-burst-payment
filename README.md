@@ -7,6 +7,8 @@
 
 <a href="https://www.burst-coin.org" target="_blank"><img src="https://github.com/felixbrucker/shopware-burst-payment/wiki/assets/img/burst.png" width="80"/></a> payment integration for Shopware 6
 
+---
+
 # Getting started
 
 * [System Requirements](https://github.com/felixbrucker/shopware-burst-payment/wiki/System-Requirements)
