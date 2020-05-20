@@ -102,7 +102,7 @@ class BurstRateServiceTest extends TestCase
     }
 
     /**
-     * @testdox search by the supplied currency when retrieving the burst rate
+     * @testdox searches by the supplied currency when retrieving the burst rate
      */
     public function test_getBurstRate_searchByCurrency(): void
     {
