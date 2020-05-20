@@ -3,7 +3,6 @@
 namespace Burst\BurstPayment\Test\Installation;
 
 use Burst\BurstPayment\Installation\BurstPaymentInstaller;
-use Burst\BurstPayment\Payment\BurstPaymentHandler;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Shopware\Core\Content\Media\File\FileSaver;
