@@ -22,6 +22,6 @@ class PluginConfigService
     {
         $rawConfig = $this->systemConfigService->get(self::CONFIG_KEY, $salesChannelId);
 
-        return new PluginConfig($rawConfig);
+        return new PluginConfig($rawConfig ?? []);
     }
 }
