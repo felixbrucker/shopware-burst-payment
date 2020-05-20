@@ -97,10 +97,21 @@ class BurstPaymentInstallerTest extends TestCase
         });
     }
 
+    public function methodToExecuteProvider(): array
+    {
+        return [
+            ['postInstall'],
+            ['postUpdate'],
+        ];
+    }
+
     /**
-     * @testdox creates a new payment method when running post update steps and no payment method exists yet
+     * @testdox creates a new payment method when running post install/update steps and no payment method exists yet
+     *
+     * @dataProvider methodToExecuteProvider
+     * @param string $methodToExecute
      */
-    public function test_postUpdate_paymentMethodDoesNotExistYet(): void
+    public function test_postUpdate_paymentMethodDoesNotExistYet(string $methodToExecute): void
     {
         $this->pluginId = '1234';
         $this->mediaEntity->setId('12345');
@@ -126,13 +137,16 @@ class BurstPaymentInstallerTest extends TestCase
                 ],
             ], $this->context);
 
-        $this->burstPaymentInstaller->postUpdate();
+        $this->burstPaymentInstaller->$methodToExecute();
     }
 
     /**
-     * @testdox updates the payment method when running post update steps and the payment method exists already
+     * @testdox updates the payment method when running post install/update steps and the payment method exists already
+     *
+     * @dataProvider methodToExecuteProvider
+     * @param string $methodToExecute
      */
-    public function test_postUpdate_paymentMethodExists(): void
+    public function test_postUpdate_paymentMethodExists(string $methodToExecute): void
     {
         $this->pluginId = '1234';
         $this->mediaEntity->setId('12345');
@@ -165,13 +179,16 @@ class BurstPaymentInstallerTest extends TestCase
                 ],
             ], $this->context);
 
-        $this->burstPaymentInstaller->postUpdate();
+        $this->burstPaymentInstaller->$methodToExecute();
     }
 
     /**
-     * @testdox searches the media entity via the md5 hash of the file when running post update steps
+     * @testdox searches the media entity via the md5 hash of the file when running post install/update steps
+     *
+     * @dataProvider methodToExecuteProvider
+     * @param string $methodToExecute
      */
-    public function test_postUpdate_searchMediaFileByHash(): void
+    public function test_postUpdate_searchMediaFileByHash(string $methodToExecute): void
     {
         $fileName = hash_file('md5', realpath(__DIR__ . '/../../src/Resources/config/plugin.png'));
 
@@ -183,13 +200,16 @@ class BurstPaymentInstallerTest extends TestCase
                 $this->context
             );
 
-        $this->burstPaymentInstaller->postUpdate();
+        $this->burstPaymentInstaller->$methodToExecute();
     }
 
     /**
-     * @testdox creates a media entity and persists the file linked with it when running post update steps and no media entity exists yet
+     * @testdox creates a media entity and persists the file linked with it when running post install/update steps and no media entity exists yet
+     *
+     * @dataProvider methodToExecuteProvider
+     * @param string $methodToExecute
      */
-    public function test_postUpdate_mediaEntityDoesNotExistYet(): void
+    public function test_postUpdate_mediaEntityDoesNotExistYet(string $methodToExecute): void
     {
         $this->mediaEntity = null;
         $filePath = realpath(__DIR__ . '/../../src/Resources/config/plugin.png');
@@ -213,6 +233,6 @@ class BurstPaymentInstallerTest extends TestCase
                 $this->context
             );
 
-        $this->burstPaymentInstaller->postUpdate();
+        $this->burstPaymentInstaller->$methodToExecute();
     }
 }
