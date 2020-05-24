@@ -10,8 +10,9 @@ PLUGIN_DIR="$(pwd)"
 TMP_DIR="$(mktemp -d)"
 PLUGIN_DIST_DIR="$TMP_DIR/$PLUGIN_NAME"
 
-cp -R "$PLUGIN_DIR" "$PLUGIN_DIST_DIR"
+mkdir "$PLUGIN_DIST_DIR"
+cp -R "$PLUGIN_DIR/src" "$PLUGIN_DIR/autoload-dist" "$PLUGIN_DIR/vendor" "$PLUGIN_DIR/CHANGELOG.md" "$PLUGIN_DIR/composer.json" "$PLUGIN_DIR/LICENSE" "$PLUGIN_DIR/README.md" "$PLUGIN_DIST_DIR/"
 cd "$TMP_DIR"
 PLUGIN_ZIP_NAME="burst-payment-$TAG.zip"
-zip -r "$PLUGIN_ZIP_NAME" "$PLUGIN_NAME" --exclude "$PLUGIN_NAME"/node_modules/\* "$PLUGIN_NAME"/bin/\* "$PLUGIN_NAME"/test/\* "$PLUGIN_NAME"/.editorconfig "$PLUGIN_NAME"/.gitignore "$PLUGIN_NAME"/coverage\*.xml "$PLUGIN_NAME"/phpunit\*.xml "$PLUGIN_NAME"/.git/\* "$PLUGIN_NAME"/.github/\* "$PLUGIN_NAME"/composer.lock
+zip -r "$PLUGIN_ZIP_NAME" "$PLUGIN_NAME"
 cp "$PLUGIN_ZIP_NAME" "$PLUGIN_DIR/$PLUGIN_ZIP_NAME"
