@@ -7,5 +7,5 @@ Shopware.Component.override('sw-plugin-list', {
         openBurstPaymentPluginConfig() {
             this.$router.push({ name: 'burst-payment.settings' });
         },
-    }
+    },
 });

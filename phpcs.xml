@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<ruleset name="BurstPayment">
+    <!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml for more information -->
+    <description>The BurstPayment PHP coding standard builds on the PSR-2 and Squiz coding standards.</description>
+
+    <!-- Enable colored output -->
+    <arg name="colors" />
+
+    <config name="ignore_warnings_on_exit" value="true" />
+
+    <!-- Exclude all static dependencies -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+
+    <!-- Exclude some non-PHP files to suppress confusing warnings -->
+    <exclude-pattern>*\.css$</exclude-pattern>
+    <exclude-pattern>*\.html$</exclude-pattern>
+    <exclude-pattern>*\.js$</exclude-pattern>
+    <exclude-pattern>*\.tpl$</exclude-pattern>
+
+    <!-- Include the whole PSR-2 standard, except for selected sniff messages -->
+    <rule ref="PSR2">
+        <exclude name="PSR2.ControlStructures.SwitchDeclaration.TerminatingComment"/>
+    </rule>
+
+    <!-- Promote the rule enforcing "elseif" over "else if" to an error, because this is a SHOULD recommendation. -->
+    <rule ref="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed">
+        <type>error</type>
+    </rule>
+
+    <!-- Disallow certain functions that should not exist in a production environment -->
+    <rule ref="Generic.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array" value="chop=>rtrim,close=>closedir,create_function=>null,die=>exit,diskfreespace=>disk_free_space,doubleval=>floatval,ereg=>mb_ereg,ereg_replace=>mb_ereg_replace,eregi=>mb_eregi,eregi_replace=>mb_eregi_replace,error_log=>null,eval=>null,exit=>null,extract=>null,fputs=>fwrite,i18n_convert=>mb_convert_encoding,i18n_discover_encoding=>mb_detect_encoding,i18n_http_input=>mb_http_input,i18n_http_output=>mb_http_output,i18n_internal_encoding=>mb_internal_encoding,i18n_ja_jp_hantozen=>mb_convert_kana,i18n_mime_header_decode=>mb_decode_mimeheader,i18n_mime_header_encode=>mb_encode_mimeheader,ini_alter=>ini_set,ini_set=>null,is_double=>is_float,is_integer=>is_int,is_long=>is_int,is_null=>null,is_real=>is_float,is_writeable=>is_writable,join=>implode,key_exists=>>array_key_exists,magic_quotes_runtime=>set_magic_quotes_runtime,mail=>mb_send_mail,mbstrcut=>mb_strcut,mbstrlen=>mb_strlen,mbstrpos=>mb_strpos,mbstrrpos=>mb_strrpos,mbsubstr=>mb_substr,pos=>current,print_r=>null,show_source=>highlight_file,sizeof=>count,sizeof=>count,split=>mb_split,strchr=>strstr,stripos=>mb_stripos,stristr=>mb_stristr,strlen=>mb_strlen,strpos=>mb_strpos,strrchr=>mb_strrchr,strripos=>mb_strripos,strrpos=>mb_strrpos,strstr=>mb_strstr,strtolower=>mb_strtolower,strtoupper=>mb_strtoupper,substr=>mb_substr,substr_count=>mb_substr_count,sys_get_temp_dir=>null,var_dump=>null,xptr_new_context=>xpath_new_context"/>
+        </properties>
+    </rule>
+
+    <!-- Disallow short opening php tag <? -->
+    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+
+    <!-- Disallow closing php tag ?> -->
+    <rule ref="Zend.Files.ClosingTag"/>
+
+    <!-- Disallow $this in static methods -->
+    <rule ref="Squiz.Scope.StaticThisUsage"/>
+
+    <!-- Disallow if-else block with no effect -->
+    <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
+
+    <!-- Disallow  if statements that always evaluate true or false -->
+    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement">
+        <type>error</type>
+    </rule>
+
+    <!-- Disallow if-else, loops etc. without curly braces, i.e. "if (true) doStuff()" -->
+    <rule ref="Generic.ControlStructures.InlineControlStructure">
+        <type>error</type>
+    </rule>
+
+    <!-- Disallow $a = 'foo'; $b = 'bar'; in the same line -->
+    <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
+
+    <!-- Disallow error silencing with @ (<?php @methodThatFailsWontThrowException() ?>) -->
+    <rule ref="Generic.PHP.NoSilencedErrors">
+        <type>error</type>
+    </rule>
+
+    <!-- Disallow access to superglobals $_REQUESt, $_GET, $_POST and $_FILES (the error message is bad) -->
+    <rule ref="MySource.PHP.GetRequestData"/>
+
+    <!-- Disallow multiple assignments in a single statement, i.e. $foo = $bar = "baz"; -->
+    <rule ref="Squiz.PHP.DisallowMultipleAssignments"/>
+
+    <!-- Disallow global keyword => function foo() { global $db; $db->query('...') } -->
+    <rule ref="Squiz.PHP.GlobalKeyword"/>
+
+    <!-- Disallow function definitions within functions (except closures) -->
+    <rule ref="Squiz.PHP.InnerFunctions"/>
+
+    <!-- Detect code that could never be reached -->
+    <rule ref="Squiz.PHP.NonExecutableCode">
+        <type>error</type>
+    </rule>
+
+    <!-- Disallow assignments in conditional statements -->
+    <rule ref="Generic.CodeAnalysis.AssignmentInCondition">
+        <type>error</type>
+    </rule>
+
+    <!-- Disallow lower case characters in constant names -->
+    <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+
+    <!-- Line endings must be in Unix format "\n" -->
+    <rule ref="Generic.Files.LineEndings"/>
+
+    <!-- Disallow long array syntax -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <!-- Detect wrong operator spacing -->
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing"/>
+
+    <!-- Disallow double quoted strings, if they don't contain an escape sequence -->
+    <rule ref="Squiz.Strings.DoubleQuoteUsage"/>
+
+    <!-- Disallow unnecessary string concatenations in a single line -->
+    <rule ref="Generic.Strings.UnnecessaryStringConcat">
+        <properties>
+            <property name="allowMultiline" type="boolean" value="true"/>
+        </properties>
+    </rule>
+
+    <!-- Disable method name checks for test classes -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>*/Test/*Test\.php$</exclude-pattern>
+    </rule>
+</ruleset>

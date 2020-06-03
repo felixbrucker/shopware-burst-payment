@@ -16,13 +16,17 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
-      - name: Install dependencies
+      - name: Install php dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-      - name: Run unit tests
+      - name: Lint php
+        run: composer run lint
+      - name: Run php unit tests
         run: composer run test:unit --  --coverage-clover=coverage.unit.xml
       - name: Install js dependencies
         run: npm install
-      - name: Build plugin bundles
+      - name: Lint js
+        run: npm run lint
+      - name: Build js plugin bundles
         run: npm run build
       - name: Report code coverage
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}

@@ -14,8 +14,8 @@ Module.register('burst-payment-config-module', {
             component: 'burst-payment-config',
             path: 'settings',
             meta: {
-                parentPath: 'sw.settings.index'
-            }
-        }
-    }
+                parentPath: 'sw.settings.index',
+            },
+        },
+    },
 });

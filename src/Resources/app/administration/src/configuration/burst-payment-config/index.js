@@ -55,6 +55,7 @@ Component.register('burst-payment-config', {
                     message: this.$t('burst-payment.messages.save.error', { errorMessage }),
                 });
                 this.isLoading = false;
+
                 return;
             }
 
@@ -66,7 +67,7 @@ Component.register('burst-payment-config', {
         async validateWalletConnection() {
             const burstWalletUrl = this.config[`${BURST_PAYMENT_CONFIG_DOMAIN}.burstWalletUrl`];
             const isReachable = await this.burstPaymentValidationService.validateWalletConnection(
-                burstWalletUrl
+                burstWalletUrl,
             );
             if (isReachable) {
                 this.createNotificationSuccess({

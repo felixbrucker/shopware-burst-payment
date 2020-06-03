@@ -186,7 +186,7 @@ class OpenOrdersService
                 continue;
             }
             $confirmationCount = $transaction['confirmations'] ?? 0;
-            if ((isset($paymentContext['confirmations'] )) && $paymentContext['confirmations'] === $confirmationCount) {
+            if ((isset($paymentContext['confirmations'])) && $paymentContext['confirmations'] === $confirmationCount) {
                 continue;
             }
             $paymentContext['confirmations'] = $confirmationCount;
@@ -222,13 +222,13 @@ class OpenOrdersService
 
     private function getTransactionWithAmount(array $unconfirmedTransactions, array $transactions, string $amountInNQT): ?array
     {
-        $found = Util::array_find($unconfirmedTransactions, static function ($transaction) use ($amountInNQT) {
+        $found = Util::arrayFind($unconfirmedTransactions, static function ($transaction) use ($amountInNQT) {
             return $transaction['amountNQT'] === $amountInNQT;
         });
         if ($found) {
             return $found;
         }
-        $found = Util::array_find($transactions, static function ($transaction) use ($amountInNQT) {
+        $found = Util::arrayFind($transactions, static function ($transaction) use ($amountInNQT) {
             return $transaction['amountNQT'] === $amountInNQT;
         });
 

@@ -1,47 +1,31 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Resources\snippet\en_GB;
+namespace Burst\BurstPayment\Resources\snippet\de_DE;
 
 use Shopware\Core\System\Snippet\Files\SnippetFileInterface;
 
-class SnippetFile_en_GB implements SnippetFileInterface
+class SnippetFileDeDe implements SnippetFileInterface
 {
-
-    /**
-     * @inheritDoc
-     */
     public function getName(): string
     {
-        return 'burst-payment.en-GB';
+        return 'burst-payment.de-DE';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getPath(): string
     {
-        return __DIR__ . '/burst-payment.en-GB.json';
+        return __DIR__ . '/burst-payment.de-DE.json';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getIso(): string
     {
-        return 'en-GB';
+        return 'de-DE';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getAuthor(): string
     {
         return 'Felix Brucker';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isBase(): bool
     {
         return false;

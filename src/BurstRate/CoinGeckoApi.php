@@ -47,7 +47,7 @@ class CoinGeckoApi
     {
         $prices = $this->getRates([$symbol], [$currency]);
 
-        return $prices[strtolower($symbol)][strtolower($currency)];
+        return $prices[mb_strtolower($symbol)][mb_strtolower($currency)];
     }
 
     /**

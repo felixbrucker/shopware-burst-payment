@@ -1,6 +1,6 @@
 const { join } = require('path');
 
-module.exports = (env, argv) => ({
+module.exports = (_env, argv) => ({
     entry: {
         'burst-payment': './src/Resources/app/administration/src/burst-payment-administration.js',
     },
@@ -13,7 +13,7 @@ module.exports = (env, argv) => ({
         rules: [
             {
                 test: /\.(html|twig)$/,
-                loader: 'html-loader'
+                loader: 'html-loader',
             },
             {
                 test: /\.(js|tsx?|vue)$/,
@@ -25,7 +25,7 @@ module.exports = (env, argv) => ({
                         '@babel/preset-env', {
                             modules: false,
                             targets: {
-                                browsers: ['last 2 versions', 'edge >= 17']
+                                browsers: ['last 2 versions', 'edge >= 17'],
                             },
                         },
                     ]],
@@ -41,7 +41,7 @@ module.exports = (env, argv) => ({
                     publicPath: 'bundles/burstpayment/administration/static/img',
                 },
             },
-        ]
+        ],
     },
     devtool: argv.mode === 'production' ? false : 'eval-source-map',
     stats: {

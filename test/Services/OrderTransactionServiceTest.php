@@ -52,7 +52,7 @@ class OrderTransactionServiceTest extends TestCase
     {
         $this->orderTransaction->setCustomFields([]);
 
-        $paymentContext = $this->orderTransactionService->getBurstPaymentContext( $this->orderTransaction);
+        $paymentContext = $this->orderTransactionService->getBurstPaymentContext($this->orderTransaction);
 
         self::assertSame([], $paymentContext);
     }
@@ -68,7 +68,7 @@ class OrderTransactionServiceTest extends TestCase
             ],
         ]);
 
-        $paymentContext = $this->orderTransactionService->getBurstPaymentContext( $this->orderTransaction);
+        $paymentContext = $this->orderTransactionService->getBurstPaymentContext($this->orderTransaction);
 
         self::assertSame([
             'test' => '123',

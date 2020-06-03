@@ -54,7 +54,7 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
 
         try {
             $burstRate = $this->burstRateService->getBurstRate(
-                strtolower($currencyIsoCode),
+                mb_strtolower($currencyIsoCode),
                 $context
             );
             if (!$burstRate) {

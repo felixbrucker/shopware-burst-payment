@@ -53,7 +53,7 @@ class CheckoutSubscriber implements EventSubscriberInterface
         $totalPrice = $page->getCart()->getPrice()->getTotalPrice();
         $currencyIsoCode = $salesChannelContext->getCurrency()->getIsoCode();
         $burstRate = $this->burstRateService->getBurstRate(
-            strtolower($currencyIsoCode),
+            mb_strtolower($currencyIsoCode),
             $event->getContext()
         );
         if (!$burstRate) {

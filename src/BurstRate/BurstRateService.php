@@ -54,7 +54,7 @@ class BurstRateService
         $entitiesToUpsert = [];
         array_walk($rates['burst'], static function ($rate, $currency) use ($burstRates, &$entitiesToUpsert) {
             /** @var BurstRateEntity $existingBurstRate */
-            $existingBurstRate = Util::array_find($burstRates, static function (BurstRateEntity $burstRate) use ($currency) {
+            $existingBurstRate = Util::arrayFind($burstRates, static function (BurstRateEntity $burstRate) use ($currency) {
                 return $burstRate->getCurrency() === $currency;
             });
             if ($existingBurstRate && $existingBurstRate->getRate() !== $rate) {
@@ -78,7 +78,7 @@ class BurstRateService
         }
 
         $removedCurrencies = array_values(array_filter($burstRates, static function (BurstRateEntity $burstRate) use ($supportedCurrencies) {
-            return !Util::array_find($supportedCurrencies, static function ($currency) use ($burstRate) {
+            return !Util::arrayFind($supportedCurrencies, static function ($currency) use ($burstRate) {
                 return $burstRate->getCurrency() === $currency;
             });
         }));

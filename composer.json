@@ -21,7 +21,8 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": "^9.1.5"
+        "phpunit/phpunit": "^9.1.5",
+        "squizlabs/php_codesniffer": "^3.5.5"
     },
     "suggest": {
         "shopware/administration": "Enables Burst Payment to be operated via the Shopware 6 administration frontend.",
@@ -46,6 +47,8 @@
         }
     },
     "scripts": {
-        "test:unit": "./vendor/bin/phpunit --config phpunit.unit.xml --testdox"
+        "test:unit": "./vendor/bin/phpunit --config phpunit.unit.xml --testdox",
+        "lint": "./vendor/bin/phpcs -s -n .",
+        "lint:fix": "./vendor/bin/phpcbf -s -n ."
     }
 }

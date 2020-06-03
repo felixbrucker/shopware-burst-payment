@@ -6,7 +6,7 @@ Shopware.Component.override('sw-order-user-card', {
     props: {
         currentOrder: {
             type: Object,
-            required: true
+            required: true,
         },
     },
     computed: {

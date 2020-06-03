@@ -1,0 +1,10 @@
+# Exclude transformed webpack output from linting
+**/public/**
+**/Resources/app/storefront/dist/**
+/dist
+
+# Exclude dependencies from linting
+node_modules/
+vendor/
+
+!.*

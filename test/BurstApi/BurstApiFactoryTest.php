@@ -75,10 +75,10 @@ class BurstApiFactoryTest extends TestCase
      */
     public function test_createBurstApiForSalesChannel_usePluginConfig(): void
     {
-       $this->pluginConfig = new PluginConfig([
+        $this->pluginConfig = new PluginConfig([
            'burstAddress' => 'some other address',
            'burstWalletUrl' => 'some other wallet url',
-       ]);
+        ]);
 
         $burstApi = $this->burstApiFactory->createBurstApiForSalesChannel();
 
