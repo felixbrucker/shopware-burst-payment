@@ -4,10 +4,8 @@ namespace Burst\BurstPayment\BurstApi;
 
 use Burst\BurstPayment\Config\PluginConfig;
 use Psr\Log\LoggerInterface;
-use Shopware\Core\Framework\Routing\Annotation\RouteScope;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
 class BurstApiController
 {
