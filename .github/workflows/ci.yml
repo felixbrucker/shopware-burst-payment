@@ -28,8 +28,14 @@ jobs:
         run: npm run lint
       - name: Build js plugin bundles
         run: npm run build
-      - name: Report code coverage
+      - name: Report code coverage to codacy
+        uses: codacy/codacy-coverage-reporter-action@master
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: coverage.unit.xml
+      - name: Report code coverage to codecov
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+
 
   release:
     needs: test
