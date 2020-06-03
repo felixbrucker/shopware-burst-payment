@@ -91,7 +91,7 @@ class BurstPaymentInstaller
 
     private function ensureMedia(): string
     {
-        $filePath = __DIR__ . '/../Resources/config/plugin.png';
+        $filePath = realpath(__DIR__ . '/../Resources/config/plugin.png');
         $fileName = hash_file('md5', $filePath);
         $media = $this->getMediaEntity($fileName);
         if ($media) {

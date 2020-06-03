@@ -49,7 +49,7 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
 
         $orderTransaction = $transaction->getOrderTransaction();
         $totalPrice = $orderTransaction->getAmount()->getTotalPrice();
-        $currencyIsoCode = $salesChannelContext->getCurrency()->getIsoCode();
+        $currencyIsoCode = $salesChannelContext->getCurrency()->getIsoCode(); // TODO: use currency of order
         $context = $salesChannelContext->getContext();
 
         try {
