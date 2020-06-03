@@ -2,3 +2,6 @@
 engines:
     exclude_paths:
       - 'test/**'
+exclude_paths:
+  - CHANGELOG.md
+  - README.md
