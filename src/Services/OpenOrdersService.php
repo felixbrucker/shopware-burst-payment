@@ -130,6 +130,7 @@ class OpenOrdersService
             );
             $paymentContext['transactionId'] = $matchingTransaction['transaction'];
             $paymentContext['senderAddress'] = $matchingTransaction['senderRS'];
+            $paymentContext['confirmations'] = $matchingTransaction['confirmations'] ?? 0;
             $paymentContext['transactionState'] = $this->getTransactionState($matchingTransaction, $requiredConfirmationCount);
             $this->orderTransactionService->setBurstPaymentContext(
                 $orderTransaction,
