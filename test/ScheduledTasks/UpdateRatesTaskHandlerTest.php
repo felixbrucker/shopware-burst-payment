@@ -3,6 +3,7 @@
 namespace Burst\BurstPayment\Test\ScheduledTasks;
 
 use Burst\BurstPayment\BurstRate\BurstRateService;
+use Burst\BurstPayment\ScheduledTasks\UpdateRatesTask;
 use Burst\BurstPayment\ScheduledTasks\UpdateRatesTaskHandler;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -80,5 +81,13 @@ class UpdateRatesTaskHandlerTest extends TestCase
             );
 
         $this->updateMatchedOrdersTaskHandler->run();
+    }
+
+    /**
+     * @testdox returns the correct task class when retrieving the message to handle
+     */
+    public function test_getHandledMessages(): void
+    {
+        self::assertSame([ UpdateRatesTask::class ], UpdateRatesTaskHandler::getHandledMessages());
     }
 }

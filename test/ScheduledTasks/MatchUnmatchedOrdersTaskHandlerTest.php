@@ -2,6 +2,7 @@
 
 namespace Burst\BurstPayment\Test\ScheduledTasks;
 
+use Burst\BurstPayment\ScheduledTasks\MatchUnmatchedOrdersTask;
 use Burst\BurstPayment\ScheduledTasks\MatchUnmatchedOrdersTaskHandler;
 use Burst\BurstPayment\Services\OpenOrdersService;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -80,5 +81,13 @@ class MatchUnmatchedOrdersTaskHandlerTest extends TestCase
             );
 
         $this->matchUnmatchedOrdersTaskHandler->run();
+    }
+
+    /**
+     * @testdox returns the correct task class when retrieving the message to handle
+     */
+    public function test_getHandledMessages(): void
+    {
+        self::assertSame([ MatchUnmatchedOrdersTask::class ], MatchUnmatchedOrdersTaskHandler::getHandledMessages());
     }
 }
