@@ -27,3 +27,4 @@ PLUGIN_ZIP_NAME="burst-payment-$TAG.zip"
 zip -r "$PLUGIN_ZIP_NAME" "$PLUGIN_NAME"
 
 cp "$PLUGIN_ZIP_NAME" "$PLUGIN_DIR/$PLUGIN_ZIP_NAME"
+echo "$PLUGIN_ZIP_NAME copied to $PLUGIN_DIR"
