@@ -46,12 +46,6 @@ jobs:
       - name: Get the tag name
         id: tag
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - name: Install php dependencies
-        run: cd autoload-dist && composer install && cd .. && cp -R autoload-dist/vendor vendor
-      - name: Install js dependencies
-        run: npm install
-      - name: Build plugin bundles
-        run: npm run build
       - name: Build release zip
         run: bin/build-release-zip.sh
         env:
