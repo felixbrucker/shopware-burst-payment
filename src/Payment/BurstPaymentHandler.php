@@ -65,7 +65,9 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
 
             $burstPaymentContext = $this->orderTransactionService->getBurstPaymentContext($orderTransaction);
             $burstPaymentContext['amountToPayInNQT'] = $totalPriceInBurstNQTToPay;
-            $burstPaymentContext['amountToPayInBurst'] = BurstAmount::fromNqtAmount($totalPriceInBurstNQTToPay)->toBurstAmount();
+            $burstPaymentContext['amountToPayInBurst'] = BurstAmount::fromNqtAmount(
+                $totalPriceInBurstNQTToPay
+            )->toBurstAmount();
             $burstPaymentContext['burstRateUsed'] = $burstRate->getRate();
             $burstPaymentContext['transactionState'] = 'unmatched';
             $this->orderTransactionService->setBurstPaymentContext($orderTransaction, $context, $burstPaymentContext);
@@ -88,6 +90,14 @@ class BurstPaymentHandler implements SynchronousPaymentHandlerInterface
 
     private function getRandomSixDigitNumber(): string
     {
-        return sprintf('%s%s%s%s%s%s', mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9), mt_rand(0, 9));
+        return sprintf(
+            '%s%s%s%s%s%s',
+            mt_rand(0, 9),
+            mt_rand(0, 9),
+            mt_rand(0, 9),
+            mt_rand(0, 9),
+            mt_rand(0, 9),
+            mt_rand(0, 9)
+        );
     }
 }

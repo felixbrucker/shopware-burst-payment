@@ -92,9 +92,8 @@ class OpenOrdersService
                 continue;
             }
             $amountToPayInNQT = $paymentContext['amountToPayInNQT'] ?? null;
-            if ($amountToPayInNQT === null) {
-                $matchingTransaction = null;
-            } else {
+            $matchingTransaction = null;
+            if ($amountToPayInNQT !== null) {
                 $matchingTransaction = $this->getTransactionWithAmount(
                     $unconfirmedTransactions,
                     $transactions,
@@ -106,7 +105,8 @@ class OpenOrdersService
                 $diffInSeconds = (new DateTime('NOW'))->getTimestamp() - $orderDateTime->getTimestamp();
                 if ($cancelUnmatchedOrdersAfterMinutes && $diffInSeconds > $cancelUnmatchedOrdersAfterMinutes * 60) {
                     $this->logger->info(
-                        'Canceling order because unmatched for greater than ' . $cancelUnmatchedOrdersAfterMinutes . ' minutes',
+                        'Canceling order because unmatched for greater than '
+                        . $cancelUnmatchedOrdersAfterMinutes . ' minutes',
                         [
                             'orderNumber' => $orderTransaction->getOrder()->getOrderNumber(),
                         ]
@@ -131,7 +131,10 @@ class OpenOrdersService
             $paymentContext['transactionId'] = $matchingTransaction['transaction'];
             $paymentContext['senderAddress'] = $matchingTransaction['senderRS'];
             $paymentContext['confirmations'] = $matchingTransaction['confirmations'] ?? 0;
-            $paymentContext['transactionState'] = $this->getTransactionState($matchingTransaction, $requiredConfirmationCount);
+            $paymentContext['transactionState'] = $this->getTransactionState(
+                $matchingTransaction,
+                $requiredConfirmationCount
+            );
             $this->orderTransactionService->setBurstPaymentContext(
                 $orderTransaction,
                 $context,
@@ -220,8 +223,11 @@ class OpenOrdersService
         return $transaction['confirmations'] >= $requiredConfirmationCount ? 'confirmed' : 'pending';
     }
 
-    private function getTransactionWithAmount(array $unconfirmedTransactions, array $transactions, string $amountInNQT): ?array
-    {
+    private function getTransactionWithAmount(
+        array $unconfirmedTransactions,
+        array $transactions,
+        string $amountInNQT
+    ): ?array {
         $found = Util::arrayFind($unconfirmedTransactions, static function ($transaction) use ($amountInNQT) {
             return $transaction['amountNQT'] === $amountInNQT;
         });
@@ -239,7 +245,10 @@ class OpenOrdersService
     {
         return array_values($this->orderTransactionRepository->search(
             (new Criteria())->addFilter(
-                new EqualsFilter('order_transaction.stateMachineState.technicalName', OrderTransactionStates::STATE_OPEN),
+                new EqualsFilter(
+                    'order_transaction.stateMachineState.technicalName',
+                    OrderTransactionStates::STATE_OPEN
+                ),
                 new EqualsFilter('order_transaction.paymentMethod.handlerIdentifier', BurstPaymentHandler::IDENTIFIER)
             )->addAssociations([
                 'order',
@@ -254,7 +263,10 @@ class OpenOrdersService
     {
         return array_values($this->orderTransactionRepository->search(
             (new Criteria())->addFilter(
-                new EqualsFilter('order_transaction.stateMachineState.technicalName', OrderTransactionStates::STATE_IN_PROGRESS),
+                new EqualsFilter(
+                    'order_transaction.stateMachineState.technicalName',
+                    OrderTransactionStates::STATE_IN_PROGRESS
+                ),
                 new EqualsFilter('order_transaction.paymentMethod.handlerIdentifier', BurstPaymentHandler::IDENTIFIER)
             )->addAssociations([
                 'order',

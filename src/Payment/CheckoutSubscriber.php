@@ -82,26 +82,28 @@ class CheckoutSubscriber implements EventSubscriberInterface
             return;
         }
         $orderTransactionCustomFields = $orderTransaction->getCustomFields();
-        if (!$orderTransactionCustomFields || !isset($orderTransactionCustomFields[OrderTransactionService::PAYMENT_CONTEXT_KEY]['amountToPayInNQT'])) {
+        if (!$orderTransactionCustomFields
+            || !isset($orderTransactionCustomFields[OrderTransactionService::PAYMENT_CONTEXT_KEY]['amountToPayInNQT'])
+        ) {
             return;
         }
 
         $pluginConfig = $this->pluginConfigService->getPluginConfigForSalesChannel(
             $salesChannelContext->getSalesChannel()->getId()
         );
-        $amountToPayInNqt = $orderTransactionCustomFields[OrderTransactionService::PAYMENT_CONTEXT_KEY]['amountToPayInNQT'];
+        $paymentContext = $orderTransactionCustomFields[OrderTransactionService::PAYMENT_CONTEXT_KEY];
+        $amountToPayInNqt = $paymentContext['amountToPayInNQT'];
         $fee = BurstAmount::fromBurstAmount('0.0294')->toNQTAmount(); // TODO: fetch from suggested fee?
         $requestBurstURI = vsprintf('burst://requestBurst?receiver=%s&amountNQT=%s&feeNQT=%s&immutable=false', [
             $pluginConfig->getBurstAddress(),
             $amountToPayInNqt,
             $fee,
         ]);
-        $burstRateUsed = $orderTransactionCustomFields[OrderTransactionService::PAYMENT_CONTEXT_KEY]['burstRateUsed'];
 
         $page->addExtension(BurstPageExtension::PAGE_EXTENSION_NAME, new BurstPageExtension([
             'amountToPayInNQT' => $amountToPayInNqt,
             'amountToPayInBurst' => BurstAmount::fromNqtAmount($amountToPayInNqt)->toBurstAmount(),
-            'burstRateUsed' => $burstRateUsed,
+            'burstRateUsed' => $paymentContext['burstRateUsed'],
             'burstAddressToSendTo' => $pluginConfig->getBurstAddress(),
             'cancelUnmatchedOrdersAfterMinutes' => $pluginConfig->getCancelUnmatchedOrdersAfterMinutes(),
             'qrCodeDataUri' => (new QRCode())->render($requestBurstURI),
