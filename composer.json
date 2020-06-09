@@ -13,7 +13,7 @@
     "require": {
         "php": "^7.2",
         "brick/math": "^0.8.15",
-        "chillerlan/php-qrcode": "^3.2.3",
+        "chillerlan/php-qrcode": "^3.3.0",
         "shopware/core": "^6.2.0",
         "shopware/storefront": "^6.2.0",
         "ext-fileinfo": "*",
