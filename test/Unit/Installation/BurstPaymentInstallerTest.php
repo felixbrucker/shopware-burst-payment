@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\Installation;
+namespace Burst\BurstPayment\Test\Unit\Installation;
 
 use Burst\BurstPayment\Installation\BurstPaymentInstaller;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -190,7 +190,7 @@ class BurstPaymentInstallerTest extends TestCase
      */
     public function test_postUpdate_searchMediaFileByHash(string $methodToExecute): void
     {
-        $fileName = hash_file('md5', realpath(__DIR__ . '/../../src/Resources/config/plugin.png'));
+        $fileName = hash_file('md5', realpath(__DIR__ . '/../../../src/Resources/config/plugin.png'));
 
         $this->mediaRepositoryMock
             ->expects(self::once())
@@ -212,7 +212,7 @@ class BurstPaymentInstallerTest extends TestCase
     public function test_postUpdate_mediaEntityDoesNotExistYet(string $methodToExecute): void
     {
         $this->mediaEntity = null;
-        $filePath = realpath(__DIR__ . '/../../src/Resources/config/plugin.png');
+        $filePath = realpath(__DIR__ . '/../../../src/Resources/config/plugin.png');
 
         $this->mediaRepositoryMock
             ->expects(self::once())

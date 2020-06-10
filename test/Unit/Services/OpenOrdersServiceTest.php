@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\Services;
+namespace Burst\BurstPayment\Test\Unit\Services;
 
 use Burst\BurstPayment\BurstApi\BurstApi;
 use Burst\BurstPayment\BurstApi\BurstApiException;

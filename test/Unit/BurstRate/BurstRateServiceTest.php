@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\BurstRate;
+namespace Burst\BurstPayment\Test\Unit\BurstRate;
 
 use Burst\BurstPayment\BurstRate\BurstRateEntity;
 use Burst\BurstPayment\BurstRate\BurstRateService;

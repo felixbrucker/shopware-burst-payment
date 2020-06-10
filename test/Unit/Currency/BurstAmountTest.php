@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\Currency;
+namespace Burst\BurstPayment\Test\Unit\Currency;
 
 use Brick\Math\BigDecimal;
 use Burst\BurstPayment\Currency\BurstAmount;
