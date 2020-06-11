@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\ScheduledTasks;
+namespace Burst\BurstPayment\Test\Unit\ScheduledTasks;
 
-use Burst\BurstPayment\ScheduledTasks\MatchUnmatchedOrdersTask;
-use Burst\BurstPayment\ScheduledTasks\MatchUnmatchedOrdersTaskHandler;
+use Burst\BurstPayment\ScheduledTasks\UpdateMatchedOrdersTask;
+use Burst\BurstPayment\ScheduledTasks\UpdateMatchedOrdersTaskHandler;
 use Burst\BurstPayment\Services\OpenOrdersService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -12,9 +12,9 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 
 /**
- * @testdox MatchUnmatchedOrdersTaskHandler
+ * @testdox UpdateMatchedOrdersTaskHandler
  */
-class MatchUnmatchedOrdersTaskHandlerTest extends TestCase
+class UpdateMatchedOrdersTaskHandlerTest extends TestCase
 {
     /**
      * @var OpenOrdersService|MockObject
@@ -27,9 +27,9 @@ class MatchUnmatchedOrdersTaskHandlerTest extends TestCase
     private $loggerMock;
 
     /**
-     * @var MatchUnmatchedOrdersTaskHandler
+     * @var UpdateMatchedOrdersTaskHandler
      */
-    private $matchUnmatchedOrdersTaskHandler;
+    private $updateMatchedOrdersTaskHandler;
 
     /**
      * @before
@@ -39,7 +39,7 @@ class MatchUnmatchedOrdersTaskHandlerTest extends TestCase
         $this->openOrdersServiceMock = $this->createMock(OpenOrdersService::class);
         $scheduledTaskRepositoryMock = $this->createMock(EntityRepositoryInterface::class);
         $this->loggerMock = $this->createMock(LoggerInterface::class);
-        $this->matchUnmatchedOrdersTaskHandler = new MatchUnmatchedOrdersTaskHandler(
+        $this->updateMatchedOrdersTaskHandler = new UpdateMatchedOrdersTaskHandler(
             $scheduledTaskRepositoryMock,
             $this->openOrdersServiceMock,
             $this->loggerMock
@@ -47,16 +47,16 @@ class MatchUnmatchedOrdersTaskHandlerTest extends TestCase
     }
 
     /**
-     * @testdox calls the matchUnmatchedOrders method of the OpenOrdersService when running the task
+     * @testdox calls the updateMatchedOrders method of the OpenOrdersService when running the task
      */
-    public function test_run_callMatchUnmatchedOrders(): void
+    public function test_run_callUpdateMatchedOrders(): void
     {
         $this->openOrdersServiceMock
             ->expects(self::once())
-            ->method('matchUnmatchedOrders')
+            ->method('updateMatchedOrders')
             ->with(Context::createDefaultContext());
 
-        $this->matchUnmatchedOrdersTaskHandler->run();
+        $this->updateMatchedOrdersTaskHandler->run();
     }
 
     /**
@@ -66,21 +66,21 @@ class MatchUnmatchedOrdersTaskHandlerTest extends TestCase
     {
         $e = new \Exception('some error message');
         $this->openOrdersServiceMock
-            ->method('matchUnmatchedOrders')
+            ->method('updateMatchedOrders')
             ->willThrowException($e);
 
         $this->loggerMock
             ->expects(self::once())
             ->method('error')
             ->with(
-                'Match Unmatched Orders | Error: some error message',
+                'Update Matched Orders | Error: some error message',
                 [
                     'exception' => $e,
                     'stackTrace' => $e->getTraceAsString(),
                 ]
             );
 
-        $this->matchUnmatchedOrdersTaskHandler->run();
+        $this->updateMatchedOrdersTaskHandler->run();
     }
 
     /**
@@ -88,6 +88,6 @@ class MatchUnmatchedOrdersTaskHandlerTest extends TestCase
      */
     public function test_getHandledMessages(): void
     {
-        self::assertSame([ MatchUnmatchedOrdersTask::class ], MatchUnmatchedOrdersTaskHandler::getHandledMessages());
+        self::assertSame([ UpdateMatchedOrdersTask::class ], UpdateMatchedOrdersTaskHandler::getHandledMessages());
     }
 }

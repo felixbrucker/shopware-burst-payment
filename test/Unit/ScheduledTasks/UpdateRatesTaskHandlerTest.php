@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\ScheduledTasks;
+namespace Burst\BurstPayment\Test\Unit\ScheduledTasks;
 
 use Burst\BurstPayment\BurstRate\BurstRateService;
 use Burst\BurstPayment\ScheduledTasks\UpdateRatesTask;

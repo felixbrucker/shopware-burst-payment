@@ -2,7 +2,7 @@ name: CI
 on: push
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,20 +14,33 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}-lint
           restore-keys: ${{ runner.os }}-composer-
       - name: Install php dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
       - name: Lint php
         run: composer run lint
-      - name: Run php unit tests
-        run: composer run test:unit --  --coverage-clover=coverage.unit.xml
       - name: Install js dependencies
         run: npm install
       - name: Lint js
         run: npm run lint
-      - name: Build js plugin bundles
-        run: npm run build
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}-unit-tests
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Install php dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Run php unit tests
+        run: composer run test:unit --  --coverage-clover=coverage.unit.xml
       - name: Report code coverage to codacy
         uses: codacy/codacy-coverage-reporter-action@master
         with:
@@ -36,9 +49,75 @@ jobs:
       - name: Report code coverage to codecov
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
 
+  integration-tests:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: shopware
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      matrix:
+        php-version: ['7.2', '7.3', '7.4']
+        shopware-version: ['v6.2.0']
+    name: Integration test - PHP version ${{ matrix.php-version }} with Shopware ${{ matrix.shopware-version }}
+    steps:
+      - name: Install PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, curl, dom, fileinfo, gd, iconv, intl, json, xml, mbstring, pdo, phar, zip
+      - name: Checkout Shopware 6
+        uses: actions/checkout@v2
+        with:
+          repository: shopware/development
+          ref: ${{ matrix.shopware-version }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          path: custom/plugins/BurstPayment
+      - name: Install php dependencies
+        working-directory: ./custom/plugins/BurstPayment/autoload-dist
+        run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Copy plugin vendor dir
+        working-directory: ./custom/plugins/BurstPayment
+        run: cp -R autoload-dist/vendor ./
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}-integration-tests-php-${{ matrix.php-version }}-sw-${{ matrix.shopware-version }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Install Shopware
+        run: ./psh.phar init --DB_HOST="127.0.0.1" --DB_USER="root" --DB_PASSWORD="password" --DB_PORT=${{ job.services.mysql.ports['3306'] }}
+      - name: Install BurstPayment Plugin
+        run: php bin/console plugin:install --activate BurstPayment
+      - name: Prepare unit test database
+        run: ./psh.phar init-test-databases --DB_HOST="127.0.0.1" --DB_USER="root" --DB_PASSWORD="password" --DB_PORT=${{ job.services.mysql.ports['3306'] }}
+      - name: Set env
+        run: echo ::set-env name=SHOPWARE_DIR::$(echo "$GITHUB_WORKSPACE")
+      - name: Run php integration tests
+        working-directory: ./custom/plugins/BurstPayment
+        run: composer run test:integration
+
+  build-bundles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install js dependencies
+        run: npm install
+      - name: Build js plugin bundles
+        run: npm run build
 
   release:
-    needs: test
+    needs: ['lint', 'unit-tests', 'integration-tests', 'build-bundles']
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:

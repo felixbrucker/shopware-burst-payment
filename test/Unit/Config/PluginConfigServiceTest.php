@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\Config;
+namespace Burst\BurstPayment\Test\Unit\Config;
 
 use Burst\BurstPayment\Config\PluginConfig;
 use Burst\BurstPayment\Config\PluginConfigService;

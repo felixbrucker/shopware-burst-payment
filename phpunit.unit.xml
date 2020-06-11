@@ -6,7 +6,7 @@
 >
     <testsuites>
         <testsuite name="Burst Payment Unit Tests">
-            <directory>test</directory>
+            <directory>test/Unit</directory>
         </testsuite>
     </testsuites>
 

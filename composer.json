@@ -47,6 +47,7 @@
         }
     },
     "scripts": {
+        "test:integration": "${SHOPWARE_DIR}/vendor/bin/phpunit --config phpunit.integration.xml --testdox",
         "test:unit": "./vendor/bin/phpunit --config phpunit.unit.xml --testdox",
         "lint": "./vendor/bin/phpcs -s -n .",
         "lint:fix": "./vendor/bin/phpcbf -s -n ."
