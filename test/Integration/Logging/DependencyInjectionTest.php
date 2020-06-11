@@ -1,14 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\Integration\BurstApi;
+namespace Burst\BurstPayment\Test\Integration\Logging;
 
-use Burst\BurstPayment\BurstApi\BurstApiController;
-use Burst\BurstPayment\BurstApi\BurstApiFactory;
 use PHPUnit\Framework\TestCase;
 use Shopware\Core\Framework\Test\TestCaseBase\KernelTestBehaviour;
 
 /**
- * @testdox BurstApiDependencyInjection
+ * @testdox LoggingDependencyInjection
  */
 class DependencyInjectionTest extends TestCase
 {
@@ -21,7 +19,6 @@ class DependencyInjectionTest extends TestCase
     {
         $this->addToAssertionCount(1);
 
-        $this->getContainer()->get(BurstApiFactory::class);
-        $this->getContainer()->get(BurstApiController::class);
+        $this->getContainer()->get('burst_payment.logger');
     }
 }

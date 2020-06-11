@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Burst\BurstPayment\Test\Integration\BurstApi;
+namespace Burst\BurstPayment\Test\Integration\Resources;
 
-use Burst\BurstPayment\BurstApi\BurstApiController;
-use Burst\BurstPayment\BurstApi\BurstApiFactory;
+use Burst\BurstPayment\Resources\snippet\de_DE\SnippetFileDeDe;
+use Burst\BurstPayment\Resources\snippet\en_GB\SnippetFileEnGb;
 use PHPUnit\Framework\TestCase;
 use Shopware\Core\Framework\Test\TestCaseBase\KernelTestBehaviour;
 
 /**
- * @testdox BurstApiDependencyInjection
+ * @testdox ResourcesDependencyInjection
  */
 class DependencyInjectionTest extends TestCase
 {
@@ -21,7 +21,7 @@ class DependencyInjectionTest extends TestCase
     {
         $this->addToAssertionCount(1);
 
-        $this->getContainer()->get(BurstApiFactory::class);
-        $this->getContainer()->get(BurstApiController::class);
+        $this->getContainer()->get(SnippetFileDeDe::class);
+        $this->getContainer()->get(SnippetFileEnGb::class);
     }
 }
