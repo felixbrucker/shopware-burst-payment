@@ -97,10 +97,10 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
       - name: Install Shopware
         run: ./psh.phar init --DB_HOST="127.0.0.1" --DB_USER="root" --DB_PASSWORD="password" --DB_PORT=${{ job.services.mysql.ports['3306'] }}
+      - name: Prepare test database
+        run: ./psh.phar init-test-databases --DB_HOST="127.0.0.1" --DB_USER="root" --DB_PASSWORD="password" --DB_PORT=${{ job.services.mysql.ports['3306'] }}
       - name: Install BurstPayment Plugin
         run: php bin/console plugin:install --activate BurstPayment
-      - name: Prepare unit test database
-        run: ./psh.phar init-test-databases --DB_HOST="127.0.0.1" --DB_USER="root" --DB_PASSWORD="password" --DB_PORT=${{ job.services.mysql.ports['3306'] }}
       - name: Set env
         run: echo ::set-env name=SHOPWARE_DIR::$(echo "$GITHUB_WORKSPACE")
       - name: Run php integration tests
