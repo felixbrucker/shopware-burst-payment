@@ -26,7 +26,6 @@ jobs:
         run: npm run lint
 
   unit-tests:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -51,7 +50,6 @@ jobs:
         run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
 
   integration-tests:
-    needs: lint
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -110,7 +108,6 @@ jobs:
         run: composer run test:integration
 
   build-bundles:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
