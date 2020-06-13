@@ -5,6 +5,8 @@ namespace Burst\BurstPayment;
 use Burst\BurstPayment\Installation\BurstPaymentInstaller;
 use Shopware\Core\Content\Media\File\FileSaver;
 use Shopware\Core\Framework\Plugin;
+use Shopware\Core\Framework\Plugin\Context\ActivateContext;
+use Shopware\Core\Framework\Plugin\Context\DeactivateContext;
 use Shopware\Core\Framework\Plugin\Context\InstallContext;
 use Shopware\Core\Framework\Plugin\Context\UpdateContext;
 use Shopware\Core\Framework\Plugin\Util\PluginIdProvider;
@@ -60,5 +62,33 @@ class BurstPayment extends Plugin
         $installer->postUpdate();
 
         parent::postUpdate($updateContext);
+    }
+
+    public function activate(ActivateContext $activateContext): void
+    {
+        $installer = new BurstPaymentInstaller(
+            $activateContext->getContext(),
+            $this->container->get(PluginIdProvider::class),
+            $this->container->get('payment_method.repository'),
+            $this->container->get('media.repository'),
+            $this->container->get(FileSaver::class)
+        );
+        $installer->activate();
+
+        parent::activate($activateContext);
+    }
+
+    public function deactivate(DeactivateContext $deactivateContext): void
+    {
+        $installer = new BurstPaymentInstaller(
+            $deactivateContext->getContext(),
+            $this->container->get(PluginIdProvider::class),
+            $this->container->get('payment_method.repository'),
+            $this->container->get('media.repository'),
+            $this->container->get(FileSaver::class)
+        );
+        $installer->deactivate();
+
+        parent::deactivate($deactivateContext);
     }
 }

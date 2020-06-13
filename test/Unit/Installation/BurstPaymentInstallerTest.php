@@ -235,4 +235,72 @@ class BurstPaymentInstallerTest extends TestCase
 
         $this->burstPaymentInstaller->$methodToExecute();
     }
+
+    /**
+     * @testdox activates the payment method when running activation steps and the payment method exists
+     */
+    public function test_activate_paymentMethodExists(): void
+    {
+        $this->paymentMethodId = '12345';
+
+        $this->paymentMethodRepositoryMock
+            ->expects(self::once())
+            ->method('update')
+            ->with([
+                 [
+                     'id' => '12345',
+                     'active' => true,
+                 ],
+            ], $this->context);
+
+        $this->burstPaymentInstaller->activate();
+    }
+
+    /**
+     * @testdox does not activate the payment method when running activation steps and the payment method does not exist
+     */
+    public function test_activate_paymentMethodDoesNotExist(): void
+    {
+        $this->paymentMethodId = null;
+
+        $this->paymentMethodRepositoryMock
+            ->expects(self::never())
+            ->method('update');
+
+        $this->burstPaymentInstaller->activate();
+    }
+
+    /**
+     * @testdox deactivates the payment method when running deactivation steps and the payment method exists
+     */
+    public function test_deactivate_paymentMethodExists(): void
+    {
+        $this->paymentMethodId = '12345';
+
+        $this->paymentMethodRepositoryMock
+            ->expects(self::once())
+            ->method('update')
+            ->with([
+                [
+                    'id' => '12345',
+                    'active' => false,
+                ],
+            ], $this->context);
+
+        $this->burstPaymentInstaller->deactivate();
+    }
+
+    /**
+     * @testdox does not deactivate the payment method when running deactivation steps and the payment method does not exist
+     */
+    public function test_deactivate_paymentMethodDoesNotExist(): void
+    {
+        $this->paymentMethodId = null;
+
+        $this->paymentMethodRepositoryMock
+            ->expects(self::never())
+            ->method('update');
+
+        $this->burstPaymentInstaller->deactivate();
+    }
 }
