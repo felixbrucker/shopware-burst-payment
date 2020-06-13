@@ -65,15 +65,51 @@ class BurstPaymentInstaller
         $this->ensurePaymentMethod();
     }
 
-    private function ensurePaymentMethod(): void
+    public function activate(): void
     {
-        $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('handlerIdentifier', BurstPaymentHandler::IDENTIFIER));
-        $paymentMethodId = $this->paymentMethodRepository->searchIds($criteria, $this->context)->firstId();
+        $this->activatePaymentMethod();
+    }
 
-        $this->paymentMethodRepository->upsert([
+    public function deactivate(): void
+    {
+        $this->deactivatePaymentMethod();
+    }
+
+    private function activatePaymentMethod(): void
+    {
+        $paymentMethodId = $this->getPaymentMethodId();
+        if (!$paymentMethodId) {
+            return;
+        }
+
+        $this->paymentMethodRepository->update([
             [
                 'id' => $paymentMethodId,
+                'active' => true,
+            ],
+        ], $this->context);
+    }
+
+    private function deactivatePaymentMethod(): void
+    {
+        $paymentMethodId = $this->getPaymentMethodId();
+        if (!$paymentMethodId) {
+            return;
+        }
+
+        $this->paymentMethodRepository->update([
+            [
+                'id' => $paymentMethodId,
+                'active' => false,
+            ],
+        ], $this->context);
+    }
+
+    private function ensurePaymentMethod(): void
+    {
+        $this->paymentMethodRepository->upsert([
+            [
+                'id' => $this->getPaymentMethodId(),
                 'handlerIdentifier' => BurstPaymentHandler::IDENTIFIER,
                 'pluginId' => $this->getPluginId(),
                 'mediaId' => $this->ensureMedia(),
@@ -87,6 +123,14 @@ class BurstPaymentInstaller
                 ],
             ],
         ], $this->context);
+    }
+
+    private function getPaymentMethodId(): ?string
+    {
+        $criteria = new Criteria();
+        $criteria->addFilter(new EqualsFilter('handlerIdentifier', BurstPaymentHandler::IDENTIFIER));
+
+        return $this->paymentMethodRepository->searchIds($criteria, $this->context)->firstId();
     }
 
     private function ensureMedia(): string
