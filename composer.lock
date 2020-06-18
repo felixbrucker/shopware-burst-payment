@@ -4220,16 +4220,16 @@
         },
         {
             "name": "shopware/storefront",
-            "version": "v6.2.0",
+            "version": "v6.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopware/storefront.git",
-                "reference": "311726c4deaf77eb9357e13585203610dedc4aac"
+                "reference": "45767fcb9ebf138af1a4cc40b01442d4f6287893"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopware/storefront/zipball/311726c4deaf77eb9357e13585203610dedc4aac",
-                "reference": "311726c4deaf77eb9357e13585203610dedc4aac",
+                "url": "https://api.github.com/repos/shopware/storefront/zipball/45767fcb9ebf138af1a4cc40b01442d4f6287893",
+                "reference": "45767fcb9ebf138af1a4cc40b01442d4f6287893",
                 "shasum": ""
             },
             "require": {
@@ -4277,7 +4277,7 @@
                 "MIT"
             ],
             "description": "Storefront for Shopware",
-            "time": "2020-05-14T13:15:47+00:00"
+            "time": "2020-06-17T11:20:15+00:00"
         },
         {
             "name": "sroze/messenger-enqueue-transport",
