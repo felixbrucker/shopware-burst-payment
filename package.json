@@ -2,7 +2,7 @@
     "name": "shopware-burst-payment",
     "version": "0.1.0",
     "dependencies": {
-        "@burstjs/util": "^0.5.0-beta.9"
+        "@burstjs/util": "^0.5.0-beta.10"
     },
     "devDependencies": {
         "@babel/core": "^7.10.2",
