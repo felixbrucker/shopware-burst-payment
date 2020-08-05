@@ -3938,16 +3938,16 @@
         },
         {
             "name": "shopware/core",
-            "version": "6.3.0.0",
+            "version": "6.3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopware/core.git",
-                "reference": "df004cf648a0bb70e22655d58897a2eb8073469b"
+                "reference": "b0fb9c97f6d7b1172ed5f190f83e0a9392d0676a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopware/core/zipball/df004cf648a0bb70e22655d58897a2eb8073469b",
-                "reference": "df004cf648a0bb70e22655d58897a2eb8073469b",
+                "url": "https://api.github.com/repos/shopware/core/zipball/b0fb9c97f6d7b1172ed5f190f83e0a9392d0676a",
+                "reference": "b0fb9c97f6d7b1172ed5f190f83e0a9392d0676a",
                 "shasum": ""
             },
             "require": {
@@ -4092,7 +4092,7 @@
                 "shop",
                 "shopware"
             ],
-            "time": "2020-08-03T15:21:54+00:00"
+            "time": "2020-08-05T02:24:26+00:00"
         },
         {
             "name": "shopware/storefront",
