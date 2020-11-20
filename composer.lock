@@ -144,16 +144,16 @@
         },
         {
             "name": "chillerlan/php-qrcode",
-            "version": "3.3.0",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chillerlan/php-qrcode.git",
-                "reference": "c8fcb2d0435279421fa03f6a3f217ccae9bddd59"
+                "reference": "d8bf297e6843a53aeaa8f3285ce04fc349d133d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chillerlan/php-qrcode/zipball/c8fcb2d0435279421fa03f6a3f217ccae9bddd59",
-                "reference": "c8fcb2d0435279421fa03f6a3f217ccae9bddd59",
+                "url": "https://api.github.com/repos/chillerlan/php-qrcode/zipball/d8bf297e6843a53aeaa8f3285ce04fc349d133d6",
+                "reference": "d8bf297e6843a53aeaa8f3285ce04fc349d133d6",
                 "shasum": ""
             },
             "require": {
@@ -205,11 +205,15 @@
             ],
             "funding": [
                 {
+                    "url": "https://www.paypal.com/donate?hosted_button_id=WLYUNAT9ZTJZ4",
+                    "type": "custom"
+                },
+                {
                     "url": "https://ko-fi.com/codemasher",
                     "type": "ko_fi"
                 }
             ],
-            "time": "2020-06-04T16:47:37+00:00"
+            "time": "2020-11-18T20:51:41+00:00"
         },
         {
             "name": "chillerlan/php-settings-container",
